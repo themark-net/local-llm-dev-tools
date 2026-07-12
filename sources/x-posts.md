@@ -80,6 +80,28 @@ This enables traceability from social signal to evaluated component.
 - **Notes**: Some redundancy with existing entries (codebase-memory-mcp for code-graph memory; general coding agents like Continue/Aider/ponytail). However, repowise's specific value is its lightweight, drop-in context optimizer with published, reproducible benchmarks focused on reducing wasteful file reads and tool calls in agent loops. This aligns tightly with core repo goals: improving efficiency, lowering token costs, and making local/hybrid agent runs more practical. It can feed better context into memory systems or run alongside them. S1/S3 high for immediate usability with existing agents. S2 strong on measured efficiency gains. S4 solid (3.5k stars + pip adoption). Recommend: Evaluate as complementary layer (test token savings on real gom-jobbar or personal coding tasks); consider integration patterns with LiteLLM + local models or as a pre-filter before MCP/codebase-memory. Good candidate for empirical benchmarking in the eval harness (OQ-0002).
 - **Status**: Processed and cataloged (initial evaluation complete; noted overlaps + unique benchmark-driven efficiency angle; integration test suggested in TODO)
 
+### Entry 007: Jamon Holmgren Agentic Coding Setup (comprehensive workflow checklist)
+
+- **URL**: https://x.com/i/status/2076001786700394610
+- **Date**: 2026-07-11
+- **Poster**: Jamon Holmgren (@jamonholmgren)
+- **Summary / Key Claims**: Detailed dump of a production-grade agentic coding setup for reliable AI agents (Claude Code, Cursor, Codex, etc.). Emphasizes that missing structural pieces hurts results. Covers 18+ elements including AGENTS.md as router to skills/docs/tools; standard workflow doc/skill (recommends Matt Pocock skills); self-healing docs kept updated by agents; agents run/test/fix the app themselves; end-to-end tests and maintenance docs; custom linters with auto-fix or LLM-assisted fix; cross-agent reviews with different models/personas (maintainability, security, performance, AI smells); agent traces/worksheets committed with git tags for session continuity; automatic end-of-session feedback committed for periodic review; custom scripts in tools/bin folder (with docs on creating them); periodic commit sweeps; coding conventions doc; agent loop/night shift skill; task queue (e.g. TODOS.md or Linear CLI); false-confidence test audits; visual regression tests; automatic performance benchmarks and profiling; end-of-shift full validations.
+- **Extracted Repos / Tools**: References Matt Pocock skills repo (https://github.com/mattpocock/skills) for workflow doc/skill. Main value is the comprehensive process/workflow checklist and best practices for robust agentic setups. No single new repo, but points to established patterns and tools.
+- **TOOLS.md Link**: Added as workflow/process resource under Agent Frameworks & Orchestration (or dedicated Harness/Workflow Engineering note). Strong mapping to existing repo components (AGENTS.md, project-process, skills bootstrap, evaluation rubric, ADRs/open-questions).
+- **Notes**: Extremely relevant and actionable for enhancing the repo's agent scaffolding, harness engineering (see Entry on Learn Harness Engineering), and practical pipeline robustness. Many ideas directly extend current artifacts: make AGENTS.md a true router + self-healing guidance; add traces/worksheets (complements ADRs); custom scripts and review personas; autonomous loops and benchmarks (ties to evaluation harness ideas). Highly recommended for synthesis into docs, new skills, and bootstrap templates. Aligns with self-hosted/local focus by providing concrete, implementable workflows.
+- **Status**: Processed and cataloged (added as workflow resource; integration recommendations for AGENTS.md enhancement and new skills drafted/implemented)
+
+### Entry 008: mattpocock/skills — Reusable agent skills for real engineering
+
+- **URL**: https://github.com/mattpocock/skills (referenced in above post and widely recommended)
+- **Date**: N/A (established repo, referenced 2026-07)
+- **Poster**: N/A (high-signal reference in agentic workflow discussions)
+- **Summary / Key Claims**: Popular collection of composable, reusable agent skills (markdown SKILL.md files) for "real engineering" workflows with AI coding agents (Claude Code, Cursor, etc.). Focuses on practical, controllable skills rather than heavy frameworks. Includes router skills (e.g. ask-matt), planning (grill-me, to-prd, to-issues, wayfinder), TDD, code review, handoffs, research, prototype, etc. Install via npx skills@latest add mattpocock/skills. Works across agents; emphasizes composability and user control.
+- **Extracted Repos / Tools**: https://github.com/mattpocock/skills (main repo, tens of thousands of stars, active). Many individual skills for planning, implementation, review, and orchestration.
+- **TOOLS.md Link**: Added under Agent Frameworks & Orchestration or Skills & Prompt Engineering. Strong ecosystem value; direct fit for bootstrap skills and workflow enhancement.
+- **Notes**: Excellent complement to the Jamon Holmgren setup and harness engineering resources. Provides ready-to-use, battle-tested skills that can be vendored or referenced in this repo's bootstrap/grok-cli/skills/ and project-process. Highly recommended for cataloging and potential integration (e.g., examples or templates). Aligns with composable skills theme in the repo.
+- **Status**: Processed and cataloged (dedicated entry added; recommended for skills bootstrap enhancement)
+
 ## Future Entries Format
 
 When adding new X-sourced tools or papers:
