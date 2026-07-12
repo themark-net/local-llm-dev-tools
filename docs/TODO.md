@@ -10,7 +10,10 @@
 
 | ID | Priority | Status | Item | Open questions | Notes |
 |----|----------|--------|------|----------------|-------|
-| T-0010 | P0 | doing | **Catalog hygiene:** sync TOOLS.md + tools.json for mobile seeds 004–010; keep JSON valid; triple-write rule | — | See [plan-mobile-seed-integration.md](ops/plan-mobile-seed-integration.md). tools.json repaired 2026-07-12. |
+| T-0010 | P0 | done | **Catalog hygiene:** sync TOOLS.md + tools.json for mobile seeds 004–010 + agent-cage; triple-write | — | Phase 0 complete 2026-07-12 |
+| T-0020 | P0 | doing | **agent-cage harness:** setup pin + Makefile; first integration lab | — | `harness/agent-cage/`; see ops/harness-integration-framework.md |
+| T-0021 | P1 | todo | Cage smoke-integration + first tool smokes (LiteLLM, MCP, repowise) | — | After `make setup && make up-mcp` |
+| T-0022 | P2 | todo | Grok-in-cage or host-Grok+workspace overlay | — | overlays/ planned |
 | T-0001 | P1 | todo | Reconcile seed X placeholders vs real Entries 001/003 (ATG/colibri already processed) | [OQ-0001](open-questions/OQ-0001-seed-x-post-content.md) | Mostly superseded; close or retarget |
 | T-0011 | P1 | todo | Phase 1 skill ports: mattpocock subset + marketing-council Grok skill | — | Pin/snapshot only (ADR-0003) |
 | T-0012 | P1 | todo | LiteLLM + Ollama integration recipe under examples/ | — | litellm already in gom-jobbar venv |

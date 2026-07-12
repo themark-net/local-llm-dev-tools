@@ -1,7 +1,7 @@
 {
-  "version": "0.3.2",
-  "last_updated": "2026-07-12T03:30:00Z",
-  "description": "Structured catalog of local LLM dev tools for scripting, pipeline automation, and dashboard generation. v0.3 adds first-party Grok CLI bootstrap path and MCP/skill stack entries. v0.3.2 adds colibri (extreme low-resource MoE inference engine).",
+  "version": "0.4.0",
+  "last_updated": "2026-07-12T06:09:43Z",
+  "description": "Structured catalog. v0.4: Phase 0 sync of mobile seeds 004-010 + agent-cage harness entry; tools.json repaired and expanded.",
   "schema_notes": {
     "required_for_all": [
       "name",
@@ -63,6 +63,31 @@
       ],
       "bootstrap_path": "bootstrap/project-process",
       "notes": "Scaffold DESIGN/ADR/TODO/OQ/AGENTS for new projects. Skills: project-process + adr/docs/open-questions. Verdict: light framework sufficient vs adr-tools/SaaS."
+    },
+    {
+      "name": "agent-cage (PNNL)",
+      "primary_category": "Pipeline & CI/CD Components",
+      "github": "https://github.com/pnnl/agent-cage",
+      "scores": {
+        "s1": 92,
+        "s2": 85,
+        "s3": 98,
+        "s4": 78,
+        "overall": 90
+      },
+      "tier": "S",
+      "tags": [
+        "docker",
+        "sandbox",
+        "mcp-compatible",
+        "harness",
+        "pipeline",
+        "local-first",
+        "network-policy"
+      ],
+      "pinned_commit": "ea0cdb328683",
+      "bootstrap_path": "harness/agent-cage",
+      "notes": "PRIMARY integration harness. Docker sandbox with MCP overlay, policy engine, versionable images. agentcage CLI + compose. First tool for containerized testing of catalog integrations. See harness/agent-cage/."
     },
     {
       "name": "adr-tools",
@@ -240,6 +265,162 @@
       "pinned_commit": "2c606141936f1eeef17fa3043a72095b4765b9c2",
       "bootstrap_path": "bootstrap/grok-cli/skills/karpathy-guidelines",
       "notes": "MIT single skill vendored into bootstrap first-party skills install."
+    },
+    {
+      "name": "repowise",
+      "primary_category": "Coding & Dev Agents",
+      "github": "https://github.com/repowise-dev/repowise",
+      "scores": {
+        "s1": 88,
+        "s2": 92,
+        "s3": 88,
+        "s4": 82,
+        "overall": 88
+      },
+      "tier": "A",
+      "tags": [
+        "context",
+        "token-efficiency",
+        "coding-agent",
+        "local-first"
+      ],
+      "pinned_commit": "latest-pypi-pin-on-eval",
+      "x_post_id": "2076117959958053084",
+      "notes": "Context optimization layer with published efficiency benchmarks. Complement to codebase-memory-mcp; smoke-test in harness."
+    },
+    {
+      "name": "gstack",
+      "primary_category": "Agent Frameworks & Orchestration",
+      "github": "https://github.com/garrytan/gstack",
+      "scores": {
+        "s1": 85,
+        "s2": 85,
+        "s3": 90,
+        "s4": 95,
+        "overall": 88
+      },
+      "tier": "A",
+      "tags": [
+        "skills",
+        "multi-agent",
+        "roles",
+        "workflow",
+        "claude-code"
+      ],
+      "pinned_commit": "latest-main-pin-on-eval",
+      "x_post_id": "2075933298627383473",
+      "notes": "23 specialist skills + power tools. Patterns portable to Grok; do not full-embed large tree. Use for role-router recipes + selective skill ports."
+    },
+    {
+      "name": "mattpocock/skills",
+      "primary_category": "Agent Frameworks & Orchestration",
+      "github": "https://github.com/mattpocock/skills",
+      "scores": {
+        "s1": 82,
+        "s2": 90,
+        "s3": 90,
+        "s4": 90,
+        "overall": 87
+      },
+      "tier": "A",
+      "tags": [
+        "skills",
+        "planning",
+        "tdd",
+        "review",
+        "grok-cli",
+        "composable"
+      ],
+      "pinned_commit": "latest-main-pin-on-vendor",
+      "x_post_id": "entry-008",
+      "notes": "Composable engineering skills. Vendor selected skills via skills.paths snapshot like ponytail."
+    },
+    {
+      "name": "marketing-skills (marketing-council)",
+      "primary_category": "Agent Frameworks & Orchestration",
+      "github": "https://github.com/coreyhaines31/marketingskills",
+      "scores": {
+        "s1": 78,
+        "s2": 90,
+        "s3": 88,
+        "s4": 92,
+        "overall": 85
+      },
+      "tier": "A",
+      "tags": [
+        "skills",
+        "multi-agent",
+        "council",
+        "prompt-pack",
+        "grok-cli"
+      ],
+      "pinned_commit": "latest-main-pin-on-vendor",
+      "x_post_id": "2076048436538048530",
+      "notes": "47-skill pack; flagship marketing-council + dissenter. Port SKILL.md patterns into bootstrap/grok-cli skills; do not embed full pack unless customized."
+    },
+    {
+      "name": "Antigravity-Manager",
+      "primary_category": "Proxy & Routing",
+      "github": "https://github.com/lbjlaq/Antigravity-Manager",
+      "scores": {
+        "s1": 85,
+        "s2": 80,
+        "s3": 90,
+        "s4": 90,
+        "overall": 86
+      },
+      "tier": "A",
+      "tags": [
+        "proxy",
+        "account-pool",
+        "tauri",
+        "local-first",
+        "openai-shim"
+      ],
+      "pinned_commit": "latest-release-pin-on-eval",
+      "x_post_id": "2076109541863989620",
+      "notes": "Local API relay + multi-account switcher. Complements LiteLLM. Eval Tauri binary optionally; pin on adoption."
+    },
+    {
+      "name": "Jamon Holmgren agentic setup",
+      "primary_category": "Pipeline & CI/CD Components",
+      "github": "https://x.com/i/status/2076001786700394610",
+      "scores": {
+        "s1": 70,
+        "s2": 85,
+        "s3": 92,
+        "s4": 80,
+        "overall": 81
+      },
+      "tier": "A",
+      "tags": [
+        "workflow",
+        "harness",
+        "agents-md",
+        "process"
+      ],
+      "x_post_id": "2076001786700394610",
+      "notes": "Workflow checklist not a single repo. Partially absorbed into AGENTS.md advanced section. Continue synthesizing into project-process templates."
+    },
+    {
+      "name": "Ruben Hassid context/token hacks",
+      "primary_category": "Pipeline & CI/CD Components",
+      "github": "https://x.com/i/status/2075807299638014212",
+      "scores": {
+        "s1": 65,
+        "s2": 92,
+        "s3": 80,
+        "s4": 75,
+        "overall": 77
+      },
+      "tier": "B",
+      "tags": [
+        "token-efficiency",
+        "prompt",
+        "workflow"
+      ],
+      "x_post_id": "2075807299638014212",
+      "notes": "Practice list not a repo. Principles \u2192 AGENTS.md / context-budget skill. Complements repowise."
     }
   ],
   "aggregates": [
@@ -257,8 +438,10 @@
     {
       "id": "2075994424484732984",
       "url": "https://x.com/i/status/2075994424484732984",
-      "status": "pending_content",
-      "tools_extracted": []
+      "status": "processed",
+      "tools_extracted": [
+        "Atomic Task Graph (ATG)"
+      ]
     },
     {
       "id": "2075731830477877612",
@@ -270,6 +453,63 @@
         "colibri"
       ],
       "summary": "Colibri: pure C, zero-dep inference engine running GLM-5.2 744B MoE (~40B active) on ~25GB RAM laptop by streaming experts from disk. Single ~2400-line C core. CLI + OpenAI serve mode. High engagement (3k+ likes, 3.5k bookmarks)."
+    },
+    {
+      "id": "2076048436538048530",
+      "url": "https://x.com/i/status/2076048436538048530",
+      "status": "processed",
+      "tools_extracted": [
+        "marketing-skills (marketing-council)"
+      ]
+    },
+    {
+      "id": "2076109541863989620",
+      "url": "https://x.com/i/status/2076109541863989620",
+      "status": "processed",
+      "tools_extracted": [
+        "Antigravity-Manager"
+      ]
+    },
+    {
+      "id": "2076117959958053084",
+      "url": "https://x.com/i/status/2076117959958053084",
+      "status": "processed",
+      "tools_extracted": [
+        "repowise"
+      ]
+    },
+    {
+      "id": "2076001786700394610",
+      "url": "https://x.com/i/status/2076001786700394610",
+      "status": "processed",
+      "tools_extracted": [
+        "Jamon Holmgren agentic setup"
+      ]
+    },
+    {
+      "id": "2075807299638014212",
+      "url": "https://x.com/i/status/2075807299638014212",
+      "status": "processed",
+      "tools_extracted": [
+        "Ruben Hassid context/token hacks"
+      ]
+    },
+    {
+      "id": "2075933298627383473",
+      "url": "https://x.com/i/status/2075933298627383473",
+      "status": "processed",
+      "tools_extracted": [
+        "gstack"
+      ]
+    },
+    {
+      "id": "agent-cage-pnnl",
+      "url": "https://github.com/pnnl/agent-cage",
+      "status": "processed",
+      "tools_extracted": [
+        "agent-cage (PNNL)"
+      ],
+      "summary": "Docker sandbox harness with MCP; primary container test framework"
     }
   ]
 }

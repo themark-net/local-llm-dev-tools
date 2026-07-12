@@ -1,0 +1,17 @@
+{
+  "name": "agent-cage-harness",
+  "version": "0.1.0",
+  "upstream": "https://github.com/pnnl/agent-cage",
+  "pinned_commit": "ea0cdb328683",
+  "branch": "develop",
+  "clone_dir_default": "${HOME}/.local/share/local-llm-dev-tools/agent-cage",
+  "purpose": "Primary containerized agent sandbox for reproducible integration tests of catalog tools + MCP",
+  "related": [
+    "https://github.com/cleatdev/cleat",
+    "https://github.com/chaserhkj/agent-cage"
+  ],
+  "operator_notes": {
+    "make": "Preferred multi-OS entry (Linux/macOS/WSL); thin wrapper over clone + agentcage/docker compose",
+    "mcp": "agentcage up --mcp; configure mcp-servers.yaml in clone or overlay"
+  }
+}

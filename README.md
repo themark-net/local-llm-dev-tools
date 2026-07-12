@@ -96,9 +96,20 @@ local-llm-dev-tools/
 ├── bootstrap/
 │   ├── grok-cli/              # Operator env: skills + MCP + config
 │   └── project-process/       # Per-repo DESIGN/ADR/TODO/OQ scaffold + skill
+├── harness/
+│   └── agent-cage/            # Container sandbox (PNNL) + Makefile lab
 ├── examples/                  # Future integration patterns
 └── pipelines/                 # Future eval & deploy harnesses
 ```
+
+### Container harness (integration lab)
+
+```bash
+cd harness/agent-cage
+make doctor && make setup && make up-mcp
+```
+
+See [harness/agent-cage/README.md](harness/agent-cage/README.md) and [docs/ops/harness-integration-framework.md](docs/ops/harness-integration-framework.md).
 
 ## Categorization Taxonomy & Ranking (Summary)
 

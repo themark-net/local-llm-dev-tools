@@ -113,6 +113,17 @@ This enables traceability from social signal to evaluated component.
 - **Notes**: Highly relevant despite being Claude-specific — the principles are universal for any LLM usage (local Ollama + hybrid setups, Grok CLI pipelines, agent loops). Directly supports repo goals around token efficiency (see repowise), context management (MCP, codebase-memory, RAG), prompt/skill engineering (Matt Pocock skills, marketing-council), and robust workflows (Jamon Holmgren setup, harness engineering). Many hacks translate to local agent instructions: better context curation to reduce re-reads, prompt libraries as reusable skills, periodic summarization for long sessions, specific scoping for coding agents, model routing. Can inspire new skills (e.g., context budget auditor, prompt library manager, smart summarizer/reset) or enhancements to AGENTS.md / project templates. Excellent complement to existing efficiency and scaffolding resources.
 - **Status**: Processed and cataloged (added as workflow/efficiency resource; potential for new skills or AGENTS.md integration noted)
 
+### Entry 011: agent-cage (PNNL) — Docker sandbox harness with MCP (operator-selected)
+
+- **URL**: https://github.com/pnnl/agent-cage (discovery: GitHub search `agent-cage`; also considered cleatdev/cleat, chaserhkj/agent-cage)
+- **Date**: 2026-07-12
+- **Poster**: N/A (operator request; GitHub)
+- **Summary / Key Claims**: Docker-based sandbox giving agents a full Ubuntu environment while the operator controls network access via mitmproxy policy, TLS inspection, domain whitelist, audit logs. Native **MCP** overlay (`mcp-servers.yaml`, compose). CLI `agentcage up [--mcp]`, shell, policy, dashboard. Harness-agnostic (Claude Code, Cline, LangGraph, custom agents). Images are versionable for reproducible integration tests — primary path for testing catalog tools in isolation.
+- **Extracted Repos / Tools**: https://github.com/pnnl/agent-cage (pin develop `ea0cdb328683`). Related: https://github.com/cleatdev/cleat (Claude-focused Docker cage), https://github.com/chaserhkj/agent-cage (Podman/microVM Rust CLI).
+- **TOOLS.md Link**: agent-cage (PNNL) S-tier Pipeline row; wrapper `harness/agent-cage/`.
+- **Notes**: Aligns with prior multi-dev harness experience (containers + MCP; Make optional for OS branching). Prefer pnnl for MCP + policy + compose; optional Makefile wrapper for Linux/macOS/Windows(WSL) developer ergonomics.
+- **Status**: Processed and cataloged; harness package scaffolded under `harness/agent-cage/`
+
 ### Entry 010: gstack — Garry Tan's Open-Source Claude Code Multi-Specialist Setup (23 skills + power tools)
 
 - **URL**: https://x.com/i/status/2075933298627383473 (and https://github.com/garrytan/gstack)

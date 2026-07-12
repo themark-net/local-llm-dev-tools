@@ -88,13 +88,14 @@ One-line purpose: **Track · Categorize · Rank · Integrate** tools for robust 
 - First-party **Grok CLI bootstrap** (`bootstrap/grok-cli/`)
 - Process docs layout (this file + ADR + TODO + OQ)
 - **project-process bootstrap** (`bootstrap/project-process/`) — replayable scaffold + `/project-process` skill for new repos
+- Phase 0 catalog sync for mobile seeds 003–010 + **agent-cage** as primary container harness (`harness/agent-cage/`)
 
 ### Near-term (see TODO)
 
-- Complete seed X post intake
-- First real aggregate synthesis or high-value pin
-- Evaluation harness prototype (LiteLLM + DSPy + MCP memory)
-- Optional first subtree/submodule when criteria met
+- agent-cage `make setup/up-mcp` smoke + first tool integration smokes
+- LiteLLM + Ollama recipe; repowise efficiency test
+- Skill ports (mattpocock / marketing-council / gstack patterns)
+- Evaluation harness prototype inside cage where possible
 
 ### Later / research
 
