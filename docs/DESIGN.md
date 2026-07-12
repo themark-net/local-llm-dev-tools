@@ -96,11 +96,12 @@ One-line purpose: **Track · Categorize · Rank · Integrate** tools for robust 
 
 ### Near-term (see TODO)
 
-Active queue is mostly **blocked P2** decisions + **T-0040** (other harness validation). Natural follow-ons after MVP lab:
+**Parked for next session** (no open P0/P1):
 
-- Catalog re-score pass using smokes + `make eval-v02` / matrix
-- Write-guard → mcp-host default wiring (server already green)
-- Unlock one blocked P2 (OQ-0003 / 0004 / 0007 / 0008)
+- **T-0042** Catalog re-score from `make eval-v02` / matrix + smokes  
+- **T-0043** Write-guard mcp-host enablement (optional; stock `@modelcontextprotocol/server-filesystem` already provides workspace FS MCP — write-guard is policy/audit only)  
+- Unlock one blocked P2 (OQ-0003 / 0004 / 0007 / 0008) when operator decides  
+- **T-0040** OpenCode/Claude validation (P3)
 
 ### Delivered recently (was near-term)
 

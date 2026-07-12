@@ -24,15 +24,17 @@
 
 ## Active (sorted P0 → P3)
 
+**Session park (2026-07-12):** No in-flight `doing` work. Main is clean at eval v0.2 + OQ-0005 closed. Resume from the parked rows below (not critical path).
+
 | ID | Priority | Status | Item | Open questions | Depends | Notes |
 |----|----------|--------|------|----------------|---------|-------|
-| T-0040 | P3 | todo | **Nice-to-have:** validate integrated setup with OpenCode and Claude Code (same cage/profiles/env) | — | — | Universal harness goal; Grok-first for now |
-
+| T-0042 | P2 | todo | Catalog re-score pass using smokes + `make eval-v02` / matrix | — | T-0041 | Parked: fold empirical results into TOOLS.md / data/tools.json narrative |
+| T-0043 | P2 | todo | Write-guard **mcp-host wiring** (enable server; optional disable stock FS writes) | — | T-0031 | Parked: **not** the stock filesystem MCP — that already works. Only if audit/enforce policy in real agent MCP sessions is needed |
 | T-0015 | P2 | blocked | Optional Antigravity-Manager eval | [OQ-0007](open-questions/OQ-0007-antigravity-need.md) | — | |
 | T-0016 | P2 | blocked | Optional colibri build+serve | [OQ-0008](open-questions/OQ-0008-colibri-weights-ok.md) | — | |
 | T-0004 | P2 | blocked | ATG prototype coupling | [OQ-0004](open-questions/OQ-0004-atg-prototype-relationship.md) | — | |
 | T-0005 | P2 | blocked | Optional first subtree | [OQ-0003](open-questions/OQ-0003-first-subtree-candidate.md) | — | |
-
+| T-0040 | P3 | todo | **Nice-to-have:** validate integrated setup with OpenCode and Claude Code (same cage/profiles/env) | — | — | Universal harness goal; Grok-first for now |
 | T-0007 | P3 | todo | adr-tools companion docs if requested | — | — | |
 | T-0002 | P3 | todo | Aggregate synthesis if needed | — | — | |
 

@@ -42,7 +42,7 @@ Design: [docs/ops/write-guard-mcp-design.md](../ops/write-guard-mcp-design.md)
 | **Tools** | `list_roots`, `list_dir`, `read_file`, `write_file`, `delete_file`, `write_status` |
 | **Invariants** | Shell can still bypass MCP — keep cage L0; do not log file bodies |
 | **ADR** | ADR-0007 |
-| **mcp-host** | Overlay fragment exists but entry disabled until package is on mcp-host PATH |
+| **mcp-host** | Overlay fragment exists but entry **disabled** (T-0043 parked). Stock cage **filesystem** MCP already handles workspace r/w; write-guard is policy/audit only |
 
 ## Verify
 
