@@ -26,8 +26,6 @@
 
 | ID | Priority | Status | Item | Open questions | Depends | Notes |
 |----|----------|--------|------|----------------|---------|-------|
-| T-0032 | P1 | todo | **One-shot skill polish + example DoDs** for cage/tool smokes | — | T-0030 | ADR-0008; docs/ops/one-shot-workflow.md shipped |
-
 | T-0012 | P1 | doing | LiteLLM + Ollama recipe under `examples/` keyed by DEPLOY_PROFILE | [OQ-0002](open-questions/OQ-0002-eval-harness-shape.md) | T-0030 | **local-only MVP shipped** (`examples/litellm-ollama/`, `make smoke-litellm-ollama`); balanced/max recipes still open |
 | T-0011 | P1 | blocked | Phase 1 skill ports: mattpocock subset + marketing-council | [OQ-0006](open-questions/OQ-0006-skill-port-strategy.md) | — | Need port strategy |
 | T-0003 | P1 | blocked | Prototype evaluation harness | [OQ-0002](open-questions/OQ-0002-eval-harness-shape.md) | T-0012 | |
