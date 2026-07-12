@@ -44,3 +44,55 @@ Portable skills: `adr`, `docs`, `open-questions`, `karpathy-guidelines`, `projec
 ./bootstrap/project-process/init.sh /path/to/repo --name <name> --vision "..."
 # or: /project-process init <path>
 ```
+
+## Advanced Agentic Workflows & Harness Practices (enhanced guidance)
+
+This repo supports robust, production-like agentic coding setups inspired by high-signal workflows (e.g., comprehensive agentic checklists and harness engineering principles). Use these to make interactions more reliable, observable, and self-improving.
+
+### AGENTS.md as Router & Onboarding
+- Treat this file as the primary **router**: It directs agents to the right skills, docs, tools, and processes based on task type (research, planning, implementation, review, autonomous work).
+- Include or reference summaries of key docs for quick greppability (first 7 lines of important files should be self-descriptive).
+- Agents should use this to discover and load context dynamically.
+
+### Self-Healing & Living Documentation
+- Agents are encouraged (and instructed via skills/docs) to keep relevant docs updated as part of their work ("self-healing docs").
+- For every system or module, maintain up-to-date docs; tag or let agents discover them via AGENTS.md.
+- Commit updates with the work.
+
+### Traces, Worksheets & Session Continuity
+- For non-trivial or multi-session tasks, create or update **agent traces/worksheets** that record actions, decisions, blockers, and progress.
+- Commit these with the work (use git tags for easy reference, e.g., corresponding to worksheet names).
+- This enables handoff: another agent (or future session) can pick up exactly where left off.
+- Reference in open-questions or TODOs as needed.
+
+### Cross-Agent Reviews & Personas
+- At major milestones (research, plan, implementation, wrap-up), perform cross-agent reviews using different models or personas where possible.
+- Personas/examples: maintainability expert, security reviewer, performance analyst, "AI smells" detector, domain specialist.
+- Document review criteria in dedicated docs or skills; agents should own/update related system docs.
+
+### Custom Scripts, Tools & Automation
+- Maintain a `tools/` or `bin/` folder with Python/bash scripts that simplify agent tasks (e.g., agent_review CLI wrapper, test runners, benchmark helpers).
+- Agents should be skilled at creating and documenting new helper scripts as needed.
+- Include docs on effective script creation.
+
+### Autonomous & Night-Shift Work
+- Support agent loops for autonomous work via dedicated skills or docs (e.g., night-shift orchestration: how to approach tasks, use task queue, report back).
+- Task queue example: TODOS.md or integrated system (e.g., Linear with CLI access).
+- Periodic sweeps: Agents can review recent commits for problems/gotchas at a higher level.
+
+### Verification, Benchmarks & Quality Gates
+- Agents must run and test their changes (build, targeted tests, end-to-end where applicable).
+- Use/write tests during implementation; update test docs/lists.
+- Custom linters/pre-commit with auto-fix (or LLM-assisted fix for complex cases) — focus on actually cleaning code, not just flagging.
+- Periodic audits: false-confidence test reviews (tests that don't actually test what they claim), performance benchmarks/profiling.
+- Visual regression (screenshots + agent review) and automatic performance degradation detection where relevant.
+- End-of-shift or major milestone full validations: run tests, reviews, sweeps, benchmarks, etc.
+
+### Feedback & Continuous Improvement
+- Agents should provide automatic end-of-session feedback (what worked, issues, suggestions), committed to a reviewable doc.
+- Periodically ingest this feedback in interactive sessions to refine workflows, skills, and docs.
+- Combine with harness engineering principles: focus on scaffolding, context, verification, observability, and constraints around the model for reliability.
+
+These practices draw from production agentic setups and harness engineering resources. Adapt and extend via skills in `bootstrap/grok-cli/skills/` and project templates. Prioritize composable, controllable elements over monolithic frameworks.
+
+Reference related resources: Learn Harness Engineering site, Matt Pocock skills (for reusable planning/TDD/review flows), and repo's own process docs for implementation.
