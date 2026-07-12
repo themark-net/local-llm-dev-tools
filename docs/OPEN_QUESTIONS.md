@@ -37,8 +37,8 @@ Related work queue: [TODO.md](TODO.md)
 ## Needs operator input soon (P1)
 
 1. **OQ-0005** — Grok in-image vs host-Grok + cage (default: host-Grok until overlay built).  
-2. **OQ-0006** — Skill port strategy (default: hybrid).  
-3. **OQ-0002** — Eval harness MVP = LiteLLM + Ollama smoke (recommended).  
+2. ~~**OQ-0006** — Skill port strategy~~ → **ADR-0009 hybrid**.  
+3. **OQ-0002** — Eval harness beyond LiteLLM smoke (scored task / DSPy?) still open for T-0003.  
 4. ~~**OQ-0009** — Write-guard default~~ → **answered: audit**.
 
 ## Hygiene
