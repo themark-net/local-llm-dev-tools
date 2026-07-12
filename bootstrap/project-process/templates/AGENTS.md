@@ -25,7 +25,7 @@ Instructions for coding agents working in this repository.
 - Commit secrets, API keys, or credentials
 - Create a second decision log outside `docs/adr/`
 
-## Skills (install via local-llm-dev-tools bootstrap)
+## Skills (install via pfy-mentat bootstrap)
 
 - `/adr` — Architecture Decision Records
 - `/open-questions` / `/oq` — TBD parking lot

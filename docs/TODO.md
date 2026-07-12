@@ -26,7 +26,6 @@
 
 | ID | Priority | Status | Item | Open questions | Depends | Notes |
 |----|----------|--------|------|----------------|---------|-------|
-| T-0030 | P0 | doing | **Env registry + profiles:** `make env-init/check`, REGISTRY, profile files | — | — | Branch `feature/env-profiles-and-write-guard` |
 | T-0032 | P1 | todo | **One-shot skill polish + example DoDs** for cage/tool smokes | — | T-0030 | ADR-0008; docs/ops/one-shot-workflow.md shipped |
 | T-0031 | P1 | todo | **Write-guard MCP implement** (stdio server + cage overlay) | [OQ-0009](open-questions/OQ-0009-write-guard-default-mode.md) | T-0030 | Design ADR-0007; scaffold under harness/write-guard-mcp |
 | T-0021 | P1 | todo | Cage tool smokes **inside cage** (LiteLLM recipe, MCP memory, repowise) | [OQ-0002](open-questions/OQ-0002-eval-harness-shape.md), [OQ-0005](open-questions/OQ-0005-grok-in-cage-strategy.md) | — | Cage baseline green; host-Grok OK for now |
@@ -34,7 +33,6 @@
 | T-0011 | P1 | blocked | Phase 1 skill ports: mattpocock subset + marketing-council | [OQ-0006](open-questions/OQ-0006-skill-port-strategy.md) | — | Need port strategy |
 | T-0013 | P1 | todo | repowise smoke vs codebase-memory (prefer in-cage) | — | T-0021 | |
 | T-0003 | P1 | blocked | Prototype evaluation harness | [OQ-0002](open-questions/OQ-0002-eval-harness-shape.md) | T-0012 | |
-| T-0022 | P1 | doing | **Grok-in-image overlay** (versioned Dockerfile + policy) | [OQ-0005](open-questions/OQ-0005-grok-in-cage-strategy.md) | — | Branch `feature/agent-cage-grok-image`; build/smoke on operator machine |
 | T-0040 | P3 | todo | **Nice-to-have:** validate integrated setup with OpenCode and Claude Code (same cage/profiles/env) | — | — | Universal harness goal; Grok-first for now |
 | T-0014 | P2 | blocked | gstack role-pattern skills / AGENTS recipes | [OQ-0006](open-questions/OQ-0006-skill-port-strategy.md) | T-0011 | |
 | T-0015 | P2 | blocked | Optional Antigravity-Manager eval | [OQ-0007](open-questions/OQ-0007-antigravity-need.md) | — | |
@@ -51,6 +49,8 @@
 
 | ID | Priority | Status | Item | Notes |
 |----|----------|--------|------|-------|
+| T-0030 | P0 | done | Env registry + profiles | merged main |
+| T-0022 | P1 | done | Grok-in-image overlay | feature/agent-cage-grok-image merged; OIDC auth import |
 | T-0000 | — | done | Process docs bootstrap | ADR-0001 |
 | T-B001 | — | done | Grok CLI bootstrap | ADR-0004 |
 | T-B002 | — | done | project-process scaffold | |

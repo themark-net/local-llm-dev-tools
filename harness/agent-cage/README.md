@@ -22,7 +22,7 @@ From **catalog repo root** (recommended):
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
-cd ~/DEVELOP/local-llm-dev-tools
+cd ~/DEVELOP/pfy-mentat
 git pull origin main   # or your feature branch
 
 make cage-doctor
@@ -58,7 +58,7 @@ agentcage down
 
 | Path | Role |
 |------|------|
-| `~/.local/share/local-llm-dev-tools/agent-cage` | Optional **source pin** checkout (editable CLI install) |
+| `~/.local/share/pfy-mentat/agent-cage` | Optional **source pin** checkout (editable CLI install) |
 | `~/.agentcage` | **Runtime project** for compose/policies/workspace (`agentcage init`) |
 
 The CLI looks for: `AGENTCAGE_DIR` env → walk up for compose → else `~/.agentcage`.

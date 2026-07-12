@@ -6,7 +6,7 @@
 
 ## Context
 
-New project needs durable process so multi-session agents do not re-litigate decisions or lose TBDs. This layout is the portable standard from `local-llm-dev-tools` project-process bootstrap.
+New project needs durable process so multi-session agents do not re-litigate decisions or lose TBDs. This layout is the portable standard from `pfy-mentat` project-process bootstrap.
 
 ## Decision
 
@@ -43,4 +43,4 @@ Rejected alternatives:
 
 ## References
 
-- Scaffolded by `bootstrap/project-process` from local-llm-dev-tools
+- Scaffolded by `bootstrap/project-process` from pfy-mentat

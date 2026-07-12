@@ -1,4 +1,4 @@
-# Contributing to local-llm-dev-tools
+# Contributing to pfy-mentat
 
 Thank you for helping improve the catalog of local LLM development tools, agents, frameworks, and infrastructure.
 

@@ -24,7 +24,7 @@
     {
       "name": "Grok CLI bootstrap",
       "primary_category": "Pipeline & CI/CD Components",
-      "github": "https://github.com/themark-net/local-llm-dev-tools",
+      "github": "https://github.com/themark-net/pfy-mentat",
       "scores": {
         "s1": 95,
         "s2": 90,
@@ -46,7 +46,7 @@
     {
       "name": "project-process bootstrap",
       "primary_category": "Pipeline & CI/CD Components",
-      "github": "https://github.com/themark-net/local-llm-dev-tools",
+      "github": "https://github.com/themark-net/pfy-mentat",
       "scores": {
         "s1": 92,
         "s2": 95,

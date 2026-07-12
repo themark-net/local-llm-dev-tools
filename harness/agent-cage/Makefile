@@ -1,4 +1,4 @@
-# agent-cage harness wrapper for local-llm-dev-tools
+# agent-cage harness wrapper for pfy-mentat
 # Multi-OS friendly entry (Linux / macOS / Windows-WSL).
 #
 # IMPORTANT:
@@ -21,7 +21,7 @@ UPSTREAM := https://github.com/pnnl/agent-cage.git
 AGENTCAGE_DIR ?= $(HOME)/.agentcage
 
 # Optional source checkout (for pin tracking / editable install). Separate from runtime.
-CAGE_SRC ?= $(HOME)/.local/share/local-llm-dev-tools/agent-cage
+CAGE_SRC ?= $(HOME)/.local/share/pfy-mentat/agent-cage
 
 export AGENTCAGE_DIR
 export PATH := $(HOME)/.local/bin:$(PATH)
@@ -29,7 +29,7 @@ export PATH := $(HOME)/.local/bin:$(PATH)
 UNAME_S := $(shell uname -s 2>/dev/null || echo unknown)
 
 GROK_OVERLAY := $(ROOT)/overlays/grok
-GROK_IMAGE := local-llm-dev-tools/agent-cage-grok:0.1.0
+GROK_IMAGE := pfy-mentat/agent-cage-grok:0.1.0
 POLICY ?= default
 
 .PHONY: help setup init update up up-mcp down shell status test logs dashboard \

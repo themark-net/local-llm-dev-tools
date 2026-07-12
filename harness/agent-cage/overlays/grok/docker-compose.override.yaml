@@ -5,7 +5,7 @@
 
 services:
   agent:
-    image: local-llm-dev-tools/agent-cage-grok:0.1.0
+    image: pfy-mentat/agent-cage-grok:0.1.0
     build:
       context: ./overlays-grok
       dockerfile: Dockerfile

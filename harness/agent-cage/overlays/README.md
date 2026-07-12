@@ -1,4 +1,4 @@
-# Overlays for local-llm-dev-tools
+# Overlays for pfy-mentat
 
 Place docker-compose overrides, MCP server snippets, and Grok/LiteLLM wiring here as they stabilize.
 

@@ -84,7 +84,7 @@ Only if you use console API keys; subscription browser users should prefer (1) o
 |--------|--------|
 | `grok-overlay-install` | Copy Dockerfile, compose override, policy into `~/.agentcage` |
 | `grok-auth-import` | Copy host `~/.grok/auth.json` → `~/.agentcage/grok-home/` |
-| `grok-overlay-build` | Build `local-llm-dev-tools/agent-cage-grok:0.1.0` |
+| `grok-overlay-build` | Build `pfy-mentat/agent-cage-grok:0.1.0` |
 | `grok-up` | `up --mcp` with `coding-agent-grok` policy |
 | `grok-smoke` | `grok --version` in container |
 | `grok-overlay-uninstall` | Remove overlay files (not host auth) |

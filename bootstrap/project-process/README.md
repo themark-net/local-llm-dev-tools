@@ -15,10 +15,10 @@ Use this when starting a repo so you never re-specify the process by hand.
 ## Quick start (new project)
 
 ```bash
-# From a local-llm-dev-tools checkout:
+# From a pfy-mentat checkout:
 mkdir -p ~/work/my-app && cd ~/work/my-app && git init
 
-/path/to/local-llm-dev-tools/bootstrap/project-process/init.sh . \
+/path/to/pfy-mentat/bootstrap/project-process/init.sh . \
   --name my-app \
   --vision "One-line product vision" \
   --install-skills

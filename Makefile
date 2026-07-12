@@ -1,4 +1,4 @@
-# local-llm-dev-tools — top-level operator entrypoints
+# pfy-mentat — top-level operator entrypoints
 # Prefer these from the repo root (avoids "no rule to make target 'test'").
 #
 # Agent cage is the integration lab. Prefer testing catalog tool installs
@@ -14,7 +14,7 @@ HARNESS := harness/agent-cage
 	cage-grok-smoke cage-grok-uninstall cage-grok-auth-import
 
 help:
-	@echo "local-llm-dev-tools"
+	@echo "pfy-mentat"
 	@echo ""
 	@echo "Environment (secrets never in git):"
 	@echo "  make env-init         Create .env from bootstrap/env/env.example if missing"

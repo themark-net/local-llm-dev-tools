@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# install.sh — Replay Grok CLI customizations from local-llm-dev-tools.
+# install.sh — Replay Grok CLI customizations from pfy-mentat.
 #
 # Idempotent. Safe to re-run. Does not touch auth tokens.
 #
@@ -226,7 +226,7 @@ verify() {
 
 # --- main -------------------------------------------------------------------
 
-log "local-llm-dev-tools Grok CLI bootstrap"
+log "pfy-mentat Grok CLI bootstrap"
 log "repo: $REPO_ROOT"
 log "GROK_HOME: $GROK_HOME"
 

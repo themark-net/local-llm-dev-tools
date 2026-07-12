@@ -1,4 +1,4 @@
-# Documentation map — local-llm-dev-tools
+# Documentation map — pfy-mentat
 
 Quick index for `/catalog-docs`.
 

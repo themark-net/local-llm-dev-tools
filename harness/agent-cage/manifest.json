@@ -4,7 +4,7 @@
   "upstream": "https://github.com/pnnl/agent-cage",
   "pinned_commit": "ea0cdb328683",
   "branch": "develop",
-  "clone_dir_default": "${HOME}/.local/share/local-llm-dev-tools/agent-cage",
+  "clone_dir_default": "${HOME}/.local/share/pfy-mentat/agent-cage",
   "purpose": "Primary containerized agent sandbox for reproducible integration tests of catalog tools + MCP",
   "related": [
     "https://github.com/cleatdev/cleat",

@@ -1,4 +1,4 @@
-# AGENTS.md — local-llm-dev-tools
+# AGENTS.md — pfy-mentat
 
 Instructions for coding agents working in this repository.
 

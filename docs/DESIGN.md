@@ -1,4 +1,4 @@
-# Design: local-llm-dev-tools
+# Design: pfy-mentat
 
 **Status:** Active  
 **Last updated:** 2026-07-11  

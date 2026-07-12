@@ -1,10 +1,10 @@
-# local-llm-dev-tools
+# pfy-mentat
 
 **Track • Categorize • Rank • Integrate** local LLM development tools, agents, frameworks, and infrastructure for building robust, self-hosted continuous pipelines.
 
 Seeded from X (Twitter) posts and community sources. Designed for iterative evaluation and integration with **Grok CLI**, custom agents, **MCP** code memory, LiteLLM routing, containerized harnesses, and production DevOps workflows.
 
-Repository: https://github.com/themark-net/local-llm-dev-tools
+Repository: https://github.com/themark-net/pfy-mentat
 
 ## Goals
 
@@ -69,13 +69,17 @@ One-shot design: [docs/ops/one-shot-workflow.md](docs/ops/one-shot-workflow.md) 
 
 Plans: [docs/ops/plan-mobile-seed-integration.md](docs/ops/plan-mobile-seed-integration.md), [docs/ops/harness-integration-framework.md](docs/ops/harness-integration-framework.md).
 
+## Deploy runbook
+
+Full new-machine path: **[docs/ops/DEPLOY.md](docs/ops/DEPLOY.md)**.
+
 ## Bootstrap (new machine + new projects)
 
 ### 1. Clone + environment profiles (do this first)
 
 ```bash
-git clone git@github.com:themark-net/local-llm-dev-tools.git
-cd local-llm-dev-tools
+git clone git@github.com:themark-net/pfy-mentat.git
+cd pfy-mentat
 make env-init                 # creates .env from example (gitignored)
 # edit .env: DEPLOY_PROFILE=local-only|balanced|max-performance + secrets
 make env-check                # validates required vars for profile
@@ -105,7 +109,7 @@ Details: [bootstrap/grok-cli/README.md](bootstrap/grok-cli/README.md).
 
 ```bash
 mkdir -p ~/work/my-app && cd ~/work/my-app && git init
-/path/to/local-llm-dev-tools/bootstrap/project-process/init.sh . \
+/path/to/pfy-mentat/bootstrap/project-process/init.sh . \
   --name my-app \
   --vision "One-line product vision" \
   --install-skills
@@ -140,7 +144,7 @@ Details: [harness/agent-cage/README.md](harness/agent-cage/README.md).
 ## Repository Structure
 
 ```
-local-llm-dev-tools/
+pfy-mentat/
 ├── README.md
 ├── AGENTS.md                  # Agent entry: mandatory reads + workflow practices
 ├── CONTRIBUTING.md            # Seed/tool contribution guidelines

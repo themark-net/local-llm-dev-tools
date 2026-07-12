@@ -1,0 +1,87 @@
+# Deploy / new-machine stand-up (pfy-mentat)
+
+**Repo:** https://github.com/themark-net/pfy-mentat  
+
+## 1. Clone
+
+```bash
+git clone git@github.com:themark-net/pfy-mentat.git
+cd pfy-mentat
+```
+
+Optional local folder rename if you still have the old path:
+
+```bash
+mv ~/DEVELOP/local-llm-dev-tools ~/DEVELOP/pfy-mentat
+cd ~/DEVELOP/pfy-mentat
+git remote set-url origin git@github.com:themark-net/pfy-mentat.git
+git fetch origin && git checkout main && git pull
+```
+
+## 2. Environment
+
+```bash
+make env-init
+# edit .env: DEPLOY_PROFILE=local-only|balanced|max-performance
+# Grok subscription: use host `grok login` (OIDC → ~/.grok/auth.json)
+# Optional CI: XAI_API_KEY in .env
+make env-check
+```
+
+See [bootstrap/env/REGISTRY.md](../../bootstrap/env/REGISTRY.md) and [deployment-profiles.md](deployment-profiles.md).
+
+## 3. Grok operator skills + MCP
+
+```bash
+# install Grok CLI if needed: curl -fsSL https://x.ai/cli/install.sh | bash
+./bootstrap/grok-cli/install.sh --with-codebase-memory
+# ensure ~/.local/bin on PATH
+```
+
+## 4. Agent cage (integration lab)
+
+```bash
+make cage-doctor
+make cage-setup
+make cage-init          # once → ~/.agentcage
+make cage-up-mcp
+make cage-test
+make cage-down
+```
+
+## 5. Grok-in-cage (optional)
+
+```bash
+make cage-grok-install
+make cage-grok-auth-import   # copy host OIDC session
+make cage-grok-build
+make cage-grok-up            # not plain cage-up-mcp
+make cage-grok-smoke
+make cage-shell              # grok available as /usr/local/bin/grok
+```
+
+Details: [harness/agent-cage/overlays/grok/README.md](../../harness/agent-cage/overlays/grok/README.md).
+
+## 6. Docs skills
+
+- `/catalog-docs` — keep this repo documented  
+- `/one-shot` — optional unattended mode (needs DoD + lab)  
+- Process: DESIGN / ADR / TODO / OQ  
+
+## Not fully automated yet
+
+| Item | Status |
+|------|--------|
+| Write-guard MCP server | Design only (ADR-0007) |
+| LiteLLM profile recipes | TODO T-0012 |
+| Full eval harness | TODO T-0003 / OQ-0002 |
+| OpenCode / Claude validation | TODO T-0040 (P3) |
+| One-shot everyday use | Optional; not required |
+
+## Verify checklist
+
+- [ ] `git remote -v` → `themark-net/pfy-mentat.git`
+- [ ] `make env-check` OK for chosen profile  
+- [ ] `grok --version` on host  
+- [ ] `make cage-test` green (stack up)  
+- [ ] Optional: `make cage-grok-smoke` green  
