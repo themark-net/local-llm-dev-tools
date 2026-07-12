@@ -32,10 +32,20 @@ GROK_OVERLAY := $(ROOT)/overlays/grok
 GROK_IMAGE := pfy-mentat/agent-cage-grok:0.1.0
 POLICY ?= default
 
+LOCAL_OLLAMA_OVERLAY := $(ROOT)/overlays/local-ollama
+LITELLM_EXAMPLE := $(CATALOG_ROOT)/examples/litellm-ollama
+LITELLM_SMOKE_MODEL ?= deepseek-coder:latest
+CM_EXAMPLE := $(CATALOG_ROOT)/examples/codebase-memory-mcp
+RW_EXAMPLE := $(CATALOG_ROOT)/examples/repowise
+REPOWISE_PIP_SPEC ?= repowise==0.30.0
+
 .PHONY: help setup init update up up-mcp down shell status test logs dashboard \
 	smoke-host smoke-integration doctor ensure-cli ensure-project \
 	grok-overlay-install grok-overlay-uninstall grok-overlay-build grok-up grok-smoke \
-	grok-auth-import
+	grok-auth-import \
+	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama \
+	smoke-codebase-memory smoke-repowise smoke-context-tools \
+	smoke-write-guard write-guard-overlay-install
 
 help:
 	@echo "agent-cage harness (upstream pin $(PIN))"
@@ -62,6 +72,18 @@ help:
 	@echo "  make grok-smoke             # grok --version inside container"
 	@echo "  make grok-overlay-uninstall # remove override from runtime project"
 	@echo "  Auth: browser/OIDC → auth.json (primary); XAI_API_KEY optional fallback"
+	@echo ""
+	@echo "LiteLLM + host Ollama (in-cage smoke):"
+	@echo "  make local-ollama-overlay-install"
+	@echo "  make local-ollama-up          # policy coding-agent-local + host-gateway"
+	@echo "  make smoke-litellm-ollama     # LiteLLM completion inside agent container"
+	@echo "Context tools (in-cage):"
+	@echo "  make smoke-codebase-memory    # binary index+search fixture"
+	@echo "  make smoke-repowise           # pip pin + health (zero LLM)"
+	@echo "  make smoke-context-tools      # both + T-0013 compare note"
+	@echo "Write-guard:"
+	@echo "  make smoke-write-guard        # policy selftest + audit/enforce in cage"
+	@echo "  make write-guard-overlay-install"
 
 doctor:
 	@echo "== OS =="; uname -a || true
@@ -280,3 +302,163 @@ grok-smoke: ensure-project
 	  -e GROK_HOME=/home/agent/.grok \
 	  -e PATH=/usr/local/bin:/home/agent/.local/bin:/usr/bin:/bin \
 	  agent-cage-agent bash -lc 'command -v grok; grok --version; test -r /home/agent/.grok/auth.json && echo auth.json:readable || echo auth.json:NOT_READABLE'
+
+# --- Local Ollama (host) + LiteLLM in-cage smoke -----------------------------
+
+# agentcage CLI ignores extra compose files; use docker compose explicitly.
+COMPOSE_LOCAL_OLLAMA = docker compose -p agent-cage \
+	-f $(COMPOSE_DIR)/docker-compose.yaml \
+	-f $(COMPOSE_DIR)/docker-compose.mcp.yaml \
+	$(if $(wildcard $(COMPOSE_DIR)/docker-compose.override.yaml),-f $(COMPOSE_DIR)/docker-compose.override.yaml,) \
+	-f $(COMPOSE_DIR)/docker-compose.local-ollama.yaml
+
+local-ollama-overlay-install: ensure-project
+	@test -f "$(LOCAL_OLLAMA_OVERLAY)/coding-agent-local.yaml"
+	@test -f "$(LOCAL_OLLAMA_OVERLAY)/docker-compose.local-ollama.yaml"
+	@cp "$(LOCAL_OLLAMA_OVERLAY)/coding-agent-local.yaml" \
+	  "$(AGENTCAGE_DIR)/policies/coding-agent-local.yaml"
+	@cp "$(LOCAL_OLLAMA_OVERLAY)/docker-compose.local-ollama.yaml" \
+	  "$(COMPOSE_DIR)/docker-compose.local-ollama.yaml"
+	@echo "Installed local-ollama overlay:"
+	@echo "  policies/coding-agent-local.yaml"
+	@echo "  docker/docker-compose.local-ollama.yaml"
+	@echo "Next: $(LITELLM_EXAMPLE)/host-ollama-gateway.sh start"
+	@echo "      make local-ollama-up && make smoke-litellm-ollama"
+
+local-ollama-up: ensure-project
+	@test -f "$(COMPOSE_DIR)/docker-compose.local-ollama.yaml" \
+	  || (echo "error: run make local-ollama-overlay-install first"; exit 1)
+	@test -f "$(AGENTCAGE_DIR)/policies/coding-agent-local.yaml" \
+	  || (echo "error: missing coding-agent-local policy — make local-ollama-overlay-install"; exit 1)
+	@# Host gateway (user-space) so Docker can reach 127.0.0.1-bound Ollama
+	@$(LITELLM_EXAMPLE)/host-ollama-gateway.sh start
+	@echo "==> docker compose up with local-ollama fragment (POLICY=coding-agent-local)"
+	@if [ -f "$(AGENTCAGE_DIR)/.env" ]; then set -a; . "$(AGENTCAGE_DIR)/.env"; set +a; fi; \
+	cd "$(COMPOSE_DIR)" && \
+	POLICY=coding-agent-local \
+	LITELLM_SMOKE_MODEL=$(LITELLM_SMOKE_MODEL) \
+	DEPLOY_PROFILE=$${DEPLOY_PROFILE:-local-only} \
+	$(COMPOSE_LOCAL_OLLAMA) up -d
+	@sleep 3
+	@docker inspect agent-cage-agent --format 'image={{.Config.Image}} status={{.State.Status}}' 2>/dev/null \
+	  || (echo "error: agent-cage-agent not running"; exit 1)
+	@echo "Policy should allow host.docker.internal. Next: make smoke-litellm-ollama"
+
+smoke-litellm-ollama: ensure-project
+	@test -f "$(LITELLM_EXAMPLE)/run-in-cage.sh" \
+	  || (echo "error: missing $(LITELLM_EXAMPLE)/run-in-cage.sh"; exit 1)
+	@$(LITELLM_EXAMPLE)/host-ollama-gateway.sh start
+	@docker inspect agent-cage-agent --format '{{.State.Status}}' 2>/dev/null | grep -q running \
+	  || (echo "error: agent not running — make local-ollama-up first"; exit 1)
+	@# Stage recipe into cage workspace (may be owned by cage agent; use docker cp)
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'mkdir -p /workspace/examples/litellm-ollama && chown agent:agent /workspace/examples /workspace/examples/litellm-ollama'
+	@docker cp "$(LITELLM_EXAMPLE)/." agent-cage-agent:/workspace/examples/litellm-ollama/
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chown -R agent:agent /workspace/examples/litellm-ollama && chmod +x /workspace/examples/litellm-ollama/*.sh /workspace/examples/litellm-ollama/smoke_completion.py'
+	@echo "==> in-cage LiteLLM → Ollama smoke (model=$(LITELLM_SMOKE_MODEL))"
+	@docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e PATH=/home/agent/.local/bin:/usr/local/bin:/usr/bin:/bin \
+	  -e OPENAI_BASE_URL=http://host.docker.internal:11435/v1 \
+	  -e OLLAMA_HOST=http://host.docker.internal:11435 \
+	  -e LITELLM_SMOKE_MODEL=$(LITELLM_SMOKE_MODEL) \
+	  -e DEPLOY_PROFILE=local-only \
+	  agent-cage-agent bash -lc \
+	  'cd /workspace/examples/litellm-ollama && bash ./run-in-cage.sh'
+	@echo "smoke-litellm-ollama: PASS"
+	@printf '| %s | PASS | %s | in-cage LiteLLM→Ollama via host.docker.internal:11435 |\n' \
+	  "$$(date -Iseconds)" "$(LITELLM_SMOKE_MODEL)" \
+	  >> "$(CATALOG_ROOT)/pipelines/smoke/litellm-ollama/results.latest.md"
+
+# --- codebase-memory-mcp + repowise in-cage smokes (T-0021 / T-0013) --------
+
+smoke-codebase-memory: ensure-project
+	@test -f "$(CM_EXAMPLE)/run-in-cage.sh"
+	@docker inspect agent-cage-agent --format '{{.State.Status}}' 2>/dev/null | grep -q running \
+	  || (echo "error: agent not running — make up-mcp or local-ollama-up first"; exit 1)
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'mkdir -p /workspace/examples/codebase-memory-mcp /home/agent/.local/bin && chown -R agent:agent /workspace/examples /home/agent/.local 2>/dev/null || true'
+	@# Prefer host binary (~270MB) to avoid re-download; fallback install inside cage
+	@if [ -x "$(HOME)/.local/bin/codebase-memory-mcp" ]; then \
+	  docker cp "$(HOME)/.local/bin/codebase-memory-mcp" agent-cage-agent:/home/agent/.local/bin/codebase-memory-mcp; \
+	  docker exec -u root agent-cage-agent bash -lc 'chown agent:agent /home/agent/.local/bin/codebase-memory-mcp && chmod +x /home/agent/.local/bin/codebase-memory-mcp'; \
+	fi
+	@docker cp "$(CM_EXAMPLE)/." agent-cage-agent:/workspace/examples/codebase-memory-mcp/
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chown -R agent:agent /workspace/examples/codebase-memory-mcp && chmod +x /workspace/examples/codebase-memory-mcp/run-in-cage.sh'
+	@echo "==> in-cage codebase-memory-mcp smoke"
+	@docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e PATH=/home/agent/.local/bin:/usr/local/bin:/usr/bin:/bin \
+	  agent-cage-agent bash -lc \
+	  'cd /workspace/examples/codebase-memory-mcp && bash ./run-in-cage.sh'
+	@echo "smoke-codebase-memory: PASS"
+	@mkdir -p "$(CATALOG_ROOT)/pipelines/smoke/codebase-memory-mcp"
+	@printf '| %s | PASS | codebase-memory-mcp | in-cage index+search fixture |\n' \
+	  "$$(date -Iseconds)" >> "$(CATALOG_ROOT)/pipelines/smoke/codebase-memory-mcp/results.latest.md"
+
+smoke-repowise: ensure-project
+	@test -f "$(RW_EXAMPLE)/run-in-cage.sh"
+	@docker inspect agent-cage-agent --format '{{.State.Status}}' 2>/dev/null | grep -q running \
+	  || (echo "error: agent not running — make up-mcp or local-ollama-up first"; exit 1)
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'mkdir -p /workspace/examples/repowise && chown -R agent:agent /workspace/examples'
+	@docker cp "$(RW_EXAMPLE)/." agent-cage-agent:/workspace/examples/repowise/
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chown -R agent:agent /workspace/examples/repowise && chmod +x /workspace/examples/repowise/run-in-cage.sh'
+	@echo "==> in-cage repowise smoke (pip $(REPOWISE_PIP_SPEC))"
+	@docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e PATH=/home/agent/.local/bin:/usr/local/bin:/usr/bin:/bin \
+	  -e REPOWISE_PIP_SPEC=$(REPOWISE_PIP_SPEC) \
+	  agent-cage-agent bash -lc \
+	  'cd /workspace/examples/repowise && bash ./run-in-cage.sh'
+	@echo "smoke-repowise: PASS"
+	@mkdir -p "$(CATALOG_ROOT)/pipelines/smoke/repowise"
+	@printf '| %s | PASS | %s | in-cage health (zero LLM) |\n' \
+	  "$$(date -Iseconds)" "$(REPOWISE_PIP_SPEC)" \
+	  >> "$(CATALOG_ROOT)/pipelines/smoke/repowise/results.latest.md"
+
+smoke-context-tools: smoke-codebase-memory smoke-repowise
+	@test -f "$(CATALOG_ROOT)/pipelines/smoke/context-tools-compare.md"
+	@echo "smoke-context-tools: PASS (see pipelines/smoke/context-tools-compare.md)"
+
+# --- write-guard MCP (T-0031) ------------------------------------------------
+
+WG_PKG := $(CATALOG_ROOT)/harness/write-guard-mcp
+WG_EXAMPLE := $(CATALOG_ROOT)/examples/write-guard-mcp
+
+write-guard-overlay-install: ensure-project
+	@mkdir -p "$(AGENTCAGE_DIR)/overlays-write-guard"
+	@cp "$(ROOT)/overlays/write-guard/mcp-servers.write-guard.yaml" \
+	  "$(AGENTCAGE_DIR)/overlays-write-guard/mcp-servers.write-guard.yaml"
+	@cp "$(ROOT)/overlays/write-guard/README.md" \
+	  "$(AGENTCAGE_DIR)/overlays-write-guard/README.md"
+	@echo "Installed write-guard overlay docs → $(AGENTCAGE_DIR)/overlays-write-guard/"
+	@echo "  Enable MCP entry after package is on mcp-host PATH (see overlay README)."
+
+smoke-write-guard: ensure-project
+	@test -f "$(WG_EXAMPLE)/run-in-cage.sh"
+	@test -d "$(WG_PKG)/src/write_guard"
+	@docker inspect agent-cage-agent --format '{{.State.Status}}' 2>/dev/null | grep -q running \
+	  || (echo "error: agent not running — make up-mcp first"; exit 1)
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'mkdir -p /workspace/examples/write-guard-mcp/pkg && chown -R agent:agent /workspace/examples'
+	@# stage package + example driver
+	@docker cp "$(WG_PKG)/." agent-cage-agent:/workspace/examples/write-guard-mcp/pkg/
+	@docker cp "$(WG_EXAMPLE)/run-in-cage.sh" agent-cage-agent:/workspace/examples/write-guard-mcp/run-in-cage.sh
+	@docker cp "$(WG_EXAMPLE)/README.md" agent-cage-agent:/workspace/examples/write-guard-mcp/README.md
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chown -R agent:agent /workspace/examples/write-guard-mcp && chmod +x /workspace/examples/write-guard-mcp/run-in-cage.sh'
+	@echo "==> in-cage write-guard smoke"
+	@docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e PATH=/home/agent/.local/bin:/usr/local/bin:/usr/bin:/bin \
+	  -e WRITE_GUARD_SRC=/workspace/examples/write-guard-mcp/pkg \
+	  agent-cage-agent bash -lc \
+	  'cd /workspace/examples/write-guard-mcp && bash ./run-in-cage.sh'
+	@echo "smoke-write-guard: PASS"
+	@mkdir -p "$(CATALOG_ROOT)/pipelines/smoke/write-guard-mcp"
+	@printf '| %s | PASS | write-guard-mcp 0.1.0 | selftest+audit+enforce in cage |\n' \
+	  "$$(date -Iseconds)" >> "$(CATALOG_ROOT)/pipelines/smoke/write-guard-mcp/results.latest.md"

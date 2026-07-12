@@ -11,7 +11,10 @@ HARNESS := harness/agent-cage
 .PHONY: help cage-doctor cage-setup cage-init cage-up cage-up-mcp cage-down \
 	cage-shell cage-status cage-test cage-logs cage-smoke-host catalog-json \
 	env-init env-check cage-grok-install cage-grok-build cage-grok-up \
-	cage-grok-smoke cage-grok-uninstall cage-grok-auth-import
+	cage-grok-smoke cage-grok-uninstall cage-grok-auth-import \
+	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama \
+	smoke-codebase-memory smoke-repowise smoke-context-tools \
+	smoke-write-guard
 
 help:
 	@echo "pfy-mentat"
@@ -36,6 +39,13 @@ help:
 	@echo "  make cage-grok-install / cage-grok-auth-import / cage-grok-build"
 	@echo "  make cage-grok-up / cage-grok-smoke / cage-grok-uninstall"
 	@echo "  Auth: import host ~/.grok/auth.json (browser/OIDC) or device-login in cage"
+	@echo ""
+	@echo "LiteLLM + Ollama (in-cage smoke, local-only):"
+	@echo "  make local-ollama-overlay-install"
+	@echo "  make local-ollama-up"
+	@echo "  make smoke-litellm-ollama   # exit 0 required; runs inside agent-cage only"
+	@echo "  make smoke-codebase-memory / smoke-repowise / smoke-context-tools"
+	@echo "  make smoke-write-guard      # T-0031 write-guard MCP policy smoke"
 	@echo ""
 	@echo "Or:  cd harness/agent-cage && make help"
 	@echo ""
@@ -98,6 +108,27 @@ cage-grok-smoke:
 
 cage-grok-uninstall:
 	@$(MAKE) -C $(HARNESS) grok-overlay-uninstall
+
+local-ollama-overlay-install:
+	@$(MAKE) -C $(HARNESS) local-ollama-overlay-install
+
+local-ollama-up:
+	@$(MAKE) -C $(HARNESS) local-ollama-up
+
+smoke-litellm-ollama:
+	@$(MAKE) -C $(HARNESS) smoke-litellm-ollama
+
+smoke-codebase-memory:
+	@$(MAKE) -C $(HARNESS) smoke-codebase-memory
+
+smoke-repowise:
+	@$(MAKE) -C $(HARNESS) smoke-repowise
+
+smoke-context-tools:
+	@$(MAKE) -C $(HARNESS) smoke-context-tools
+
+smoke-write-guard:
+	@$(MAKE) -C $(HARNESS) smoke-write-guard
 
 env-init:
 	@if [ -f .env ]; then \
