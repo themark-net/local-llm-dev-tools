@@ -44,6 +44,18 @@
         "name": "catalog-docs",
         "origin": "bootstrap/grok-cli/skills/catalog-docs/ and .grok/skills/catalog-docs/",
         "purpose": "Document this catalog repo: README, triple-write, harness, audit"
+      },
+      {
+        "name": "one-shot",
+        "origin": "bootstrap/grok-cli/skills/one-shot/",
+        "purpose": "Unattended-until-green with DoD and cost ladder"
+      },
+      {
+        "name": "marketing-council",
+        "origin": "https://github.com/coreyhaines31/marketingskills (skills/marketing-council)",
+        "pinned_commit": "5139746081be",
+        "license": "MIT",
+        "purpose": "First-party port: multi-advisor marketing council + dissenter (T-0011 / ADR-0009)"
       }
     ]
   },
@@ -65,6 +77,18 @@
         "ponytail-review"
       ],
       "notes": "Snapshot of skills/ only (~100KB). Prefer upstream update when intentionally refreshing; re-run install after updating snapshot."
+    },
+    "mattpocock": {
+      "install_mode": "skills.paths (extra scan dir, not copied into ~/.grok/skills)",
+      "vendored_snapshot": "bootstrap/grok-cli/skills-external/mattpocock/",
+      "upstream": "https://github.com/mattpocock/skills.git",
+      "pinned_commit": "391a2701dd94",
+      "skills": [
+        "tdd",
+        "code-review",
+        "to-spec"
+      ],
+      "notes": "Curated engineering subset only (plan/spec, review, TDD). Opt-out: --no-mattpocock. See PORT.md. T-0011 / ADR-0009."
     }
   },
   "mcp": {

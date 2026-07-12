@@ -14,8 +14,11 @@ command = "codebase-memory-mcp"
 args = []
 enabled = true
 
-# skills.paths is filled at install time with the absolute path to
-# bootstrap/grok-cli/skills-external/ponytail (or a custom --ponytail-dir).
+# skills.paths is filled at install time with absolute paths to external packs:
+#   skills-external/ponytail, skills-external/mattpocock (unless --no-*)
 # Example after install:
 # [skills]
-# paths = ["/absolute/path/to/bootstrap/grok-cli/skills-external/ponytail"]
+# paths = [
+#   "/absolute/path/to/bootstrap/grok-cli/skills-external/ponytail",
+#   "/absolute/path/to/bootstrap/grok-cli/skills-external/mattpocock",
+# ]

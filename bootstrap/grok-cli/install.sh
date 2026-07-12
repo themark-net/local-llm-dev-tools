@@ -9,6 +9,7 @@
 #   ./bootstrap/grok-cli/install.sh --skills-only
 #   ./bootstrap/grok-cli/install.sh --with-codebase-memory
 #   ./bootstrap/grok-cli/install.sh --no-ponytail
+#   ./bootstrap/grok-cli/install.sh --no-mattpocock
 #   ./bootstrap/grok-cli/install.sh --no-permission-mode
 #
 # Env:
@@ -16,12 +17,14 @@
 #   GROK_SKILLS_DIR    default: $GROK_HOME/skills
 #   SKIP_CODEBASE_MEMORY=1
 #   SKIP_PONYTAIL=1
+#   SKIP_MATTPOCOCK=1
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 SKILLS_SRC="$SCRIPT_DIR/skills"
 PONYTAIL_SRC="$SCRIPT_DIR/skills-external/ponytail"
+MATTPOCOCK_SRC="$SCRIPT_DIR/skills-external/mattpocock"
 PROJECT_PROCESS_SKILL="$SCRIPT_DIR/../project-process/skills/project-process"
 MERGE_PY="$SCRIPT_DIR/scripts/merge_config.py"
 
@@ -35,6 +38,7 @@ CONFIG_ONLY=0
 MCP_ONLY=0
 WITH_CODEBASE_MEMORY=0
 NO_PONYTAIL=0
+NO_MATTPOCOCK=0
 NO_PERMISSION_MODE=0
 FORCE=0
 VERIFY=0
@@ -57,6 +61,7 @@ while [[ $# -gt 0 ]]; do
     --mcp-only) MCP_ONLY=1; shift ;;
     --with-codebase-memory) WITH_CODEBASE_MEMORY=1; shift ;;
     --no-ponytail) NO_PONYTAIL=1; shift ;;
+    --no-mattpocock) NO_MATTPOCOCK=1; shift ;;
     --no-permission-mode) NO_PERMISSION_MODE=1; shift ;;
     --force) FORCE=1; shift ;;
     --verify) VERIFY=1; shift ;;
@@ -69,6 +74,7 @@ done
 
 # Honour env skips
 if [[ "${SKIP_PONYTAIL:-0}" == "1" ]]; then NO_PONYTAIL=1; fi
+if [[ "${SKIP_MATTPOCOCK:-0}" == "1" ]]; then NO_MATTPOCOCK=1; fi
 if [[ "${SKIP_CODEBASE_MEMORY:-0}" == "1" ]]; then WITH_CODEBASE_MEMORY=0; fi
 
 run() {
@@ -128,16 +134,34 @@ install_first_party_skills() {
   fi
 }
 
+# Collect absolute dirs for [skills].paths (external packs; not copied into ~/.grok/skills)
+SKILLS_PATH_ABS=()
+
 install_ponytail_path() {
   if [[ "$NO_PONYTAIL" -eq 1 ]]; then
     log "Skipping ponytail skills path (--no-ponytail)"
-    PONYTAIL_ABS=""
     return 0
   fi
   [[ -d "$PONYTAIL_SRC" ]] || die "ponytail snapshot missing: $PONYTAIL_SRC"
-  PONYTAIL_ABS="$(cd "$PONYTAIL_SRC" && pwd)"
-  log "Ponytail skills path: $PONYTAIL_ABS"
-  # skills stay in-repo; config.paths points here so updates are git-pullable
+  local abs
+  abs="$(cd "$PONYTAIL_SRC" && pwd)"
+  SKILLS_PATH_ABS+=("$abs")
+  log "Ponytail skills path: $abs"
+}
+
+install_mattpocock_path() {
+  if [[ "$NO_MATTPOCOCK" -eq 1 ]]; then
+    log "Skipping mattpocock skills path (--no-mattpocock)"
+    return 0
+  fi
+  if [[ ! -d "$MATTPOCOCK_SRC/tdd" ]]; then
+    warn "mattpocock snapshot missing or incomplete: $MATTPOCOCK_SRC"
+    return 0
+  fi
+  local abs
+  abs="$(cd "$MATTPOCOCK_SRC" && pwd)"
+  SKILLS_PATH_ABS+=("$abs")
+  log "mattpocock skills path: $abs (tdd, code-review, to-spec)"
 }
 
 install_codebase_memory() {
@@ -164,9 +188,11 @@ install_codebase_memory() {
 merge_config() {
   log "Merging Grok config → $CONFIG_TOML"
   local args=(python3 "$MERGE_PY" --config "$CONFIG_TOML")
-  if [[ -n "${PONYTAIL_ABS:-}" ]]; then
-    args+=(--ponytail-path "$PONYTAIL_ABS")
-  fi
+  local p
+  for p in "${SKILLS_PATH_ABS[@]:-}"; do
+    [[ -n "$p" ]] || continue
+    args+=(--skills-path "$p")
+  done
   if [[ "$NO_PERMISSION_MODE" -eq 1 ]]; then
     args+=(--permission-mode "")
   fi
@@ -180,7 +206,7 @@ verify() {
   log "Verifying install"
   local ok=1
   local name
-  for name in adr docs open-questions karpathy-guidelines project-process catalog-docs one-shot; do
+  for name in adr docs open-questions karpathy-guidelines project-process catalog-docs one-shot marketing-council; do
     if [[ -f "$GROK_SKILLS_DIR/$name/SKILL.md" ]]; then
       echo "  OK skill $name"
     else
@@ -196,6 +222,14 @@ verify() {
       ok=0
     fi
   fi
+  if [[ "$NO_MATTPOCOCK" -ne 1 ]]; then
+    if [[ -f "$MATTPOCOCK_SRC/tdd/SKILL.md" && -f "$MATTPOCOCK_SRC/code-review/SKILL.md" && -f "$MATTPOCOCK_SRC/to-spec/SKILL.md" ]]; then
+      echo "  OK mattpocock snapshot (tdd, code-review, to-spec)"
+    else
+      echo "  MISSING mattpocock snapshot subset"
+      ok=0
+    fi
+  fi
   if [[ -f "$CONFIG_TOML" ]]; then
     if grep -q 'mcp_servers.codebase-memory' "$CONFIG_TOML"; then
       echo "  OK config MCP codebase-memory"
@@ -205,6 +239,9 @@ verify() {
     fi
     if grep -q '\[memory\]' "$CONFIG_TOML" && grep -q 'enabled = true' "$CONFIG_TOML"; then
       echo "  OK memory enabled (section present)"
+    fi
+    if [[ "$NO_MATTPOCOCK" -ne 1 ]] && grep -q 'skills-external/mattpocock' "$CONFIG_TOML"; then
+      echo "  OK config paths include mattpocock"
     fi
   else
     echo "  MISSING $CONFIG_TOML"
@@ -230,12 +267,13 @@ log "pfy-mentat Grok CLI bootstrap"
 log "repo: $REPO_ROOT"
 log "GROK_HOME: $GROK_HOME"
 
-PONYTAIL_ABS=""
+SKILLS_PATH_ABS=()
 
 if [[ "$MCP_ONLY" -eq 1 ]]; then
   WITH_CODEBASE_MEMORY=1
   install_codebase_memory
   install_ponytail_path
+  install_mattpocock_path
   merge_config
   [[ "$VERIFY" -eq 1 ]] && verify
   log "Done (mcp-only)."
@@ -244,6 +282,7 @@ fi
 
 if [[ "$CONFIG_ONLY" -eq 1 ]]; then
   install_ponytail_path
+  install_mattpocock_path
   merge_config
   [[ "$VERIFY" -eq 1 ]] && verify
   log "Done (config-only)."
@@ -253,7 +292,8 @@ fi
 if [[ "$SKILLS_ONLY" -eq 1 ]]; then
   install_first_party_skills
   install_ponytail_path
-  # still wire paths so ponytail is discoverable
+  install_mattpocock_path
+  # still wire paths so external packs are discoverable
   merge_config
   [[ "$VERIFY" -eq 1 ]] && verify
   log "Done (skills-only)."
@@ -263,6 +303,7 @@ fi
 # Full install
 install_first_party_skills
 install_ponytail_path
+install_mattpocock_path
 install_codebase_memory
 merge_config
 verify

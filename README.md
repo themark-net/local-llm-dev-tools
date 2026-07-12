@@ -90,12 +90,14 @@ After `./bootstrap/grok-cli/install.sh`, these are available:
 |-------|-------|---------|
 | **catalog-docs** | `/catalog-docs` | **This repo’s** documentation skill (README, TOOLS/json/x-posts triple-write, harness, audit) |
 | **one-shot** | `/one-shot` | Min questions; cheap local→cage→cloud loops until DoD green (lab required) |
+| **marketing-council** | `/marketing-council` | First-party multi-advisor marketing council + dissenter (T-0011) |
 | docs | `/docs` | Portable module/ops docs for any project |
 | adr | `/adr` | Architecture decisions + rejected alternatives |
 | open-questions | `/open-questions` | TBD parking lot |
 | project-process | `/project-process` | Scaffold DESIGN/ADR/TODO/OQ into a new repo |
 | karpathy-guidelines | (auto) | Anti-overcomplication defaults |
 | ponytail | (via skills path) | Minimalism / YAGNI modes |
+| mattpocock subset | (via skills path) | tdd, code-review, to-spec (T-0011) |
 
 Project skill source of truth: [`.grok/skills/`](.grok/skills/) (also vendored under `bootstrap/grok-cli/skills/` for reinstall).  
 One-shot design: [docs/ops/one-shot-workflow.md](docs/ops/one-shot-workflow.md) · ADR-0008.
