@@ -24,7 +24,7 @@
 
 ## Active (sorted P0 → P3)
 
-**Session park (2026-07-12):** No in-flight `doing` work. Main is clean at eval v0.2 + OQ-0005 closed. Resume from the parked rows below (not critical path).
+**Session park (2026-07-12):** AgenC install + `make agenc-smoke` shipped. Resume catalog re-score / P2 OQs as needed.
 
 | ID | Priority | Status | Item | Open questions | Depends | Notes |
 |----|----------|--------|------|----------------|---------|-------|
