@@ -12,7 +12,8 @@ HARNESS := harness/agent-cage
 	cage-shell cage-status cage-test cage-logs cage-smoke-host catalog-json \
 	env-init env-check cage-grok-install cage-grok-build cage-grok-up \
 	cage-grok-smoke cage-grok-uninstall cage-grok-auth-import \
-	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama
+	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama \
+	smoke-codebase-memory smoke-repowise smoke-context-tools
 
 help:
 	@echo "pfy-mentat"
@@ -42,6 +43,7 @@ help:
 	@echo "  make local-ollama-overlay-install"
 	@echo "  make local-ollama-up"
 	@echo "  make smoke-litellm-ollama   # exit 0 required; runs inside agent-cage only"
+	@echo "  make smoke-codebase-memory / smoke-repowise / smoke-context-tools"
 	@echo ""
 	@echo "Or:  cd harness/agent-cage && make help"
 	@echo ""
@@ -113,6 +115,15 @@ local-ollama-up:
 
 smoke-litellm-ollama:
 	@$(MAKE) -C $(HARNESS) smoke-litellm-ollama
+
+smoke-codebase-memory:
+	@$(MAKE) -C $(HARNESS) smoke-codebase-memory
+
+smoke-repowise:
+	@$(MAKE) -C $(HARNESS) smoke-repowise
+
+smoke-context-tools:
+	@$(MAKE) -C $(HARNESS) smoke-context-tools
 
 env-init:
 	@if [ -f .env ]; then \

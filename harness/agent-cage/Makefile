@@ -35,12 +35,16 @@ POLICY ?= default
 LOCAL_OLLAMA_OVERLAY := $(ROOT)/overlays/local-ollama
 LITELLM_EXAMPLE := $(CATALOG_ROOT)/examples/litellm-ollama
 LITELLM_SMOKE_MODEL ?= deepseek-coder:latest
+CM_EXAMPLE := $(CATALOG_ROOT)/examples/codebase-memory-mcp
+RW_EXAMPLE := $(CATALOG_ROOT)/examples/repowise
+REPOWISE_PIP_SPEC ?= repowise==0.30.0
 
 .PHONY: help setup init update up up-mcp down shell status test logs dashboard \
 	smoke-host smoke-integration doctor ensure-cli ensure-project \
 	grok-overlay-install grok-overlay-uninstall grok-overlay-build grok-up grok-smoke \
 	grok-auth-import \
-	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama
+	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama \
+	smoke-codebase-memory smoke-repowise smoke-context-tools
 
 help:
 	@echo "agent-cage harness (upstream pin $(PIN))"
@@ -72,6 +76,10 @@ help:
 	@echo "  make local-ollama-overlay-install"
 	@echo "  make local-ollama-up          # policy coding-agent-local + host-gateway"
 	@echo "  make smoke-litellm-ollama     # LiteLLM completion inside agent container"
+	@echo "Context tools (in-cage):"
+	@echo "  make smoke-codebase-memory    # binary index+search fixture"
+	@echo "  make smoke-repowise           # pip pin + health (zero LLM)"
+	@echo "  make smoke-context-tools      # both + T-0013 compare note"
 
 doctor:
 	@echo "== OS =="; uname -a || true
@@ -358,3 +366,56 @@ smoke-litellm-ollama: ensure-project
 	@printf '| %s | PASS | %s | in-cage LiteLLM→Ollama via host.docker.internal:11435 |\n' \
 	  "$$(date -Iseconds)" "$(LITELLM_SMOKE_MODEL)" \
 	  >> "$(CATALOG_ROOT)/pipelines/smoke/litellm-ollama/results.latest.md"
+
+# --- codebase-memory-mcp + repowise in-cage smokes (T-0021 / T-0013) --------
+
+smoke-codebase-memory: ensure-project
+	@test -f "$(CM_EXAMPLE)/run-in-cage.sh"
+	@docker inspect agent-cage-agent --format '{{.State.Status}}' 2>/dev/null | grep -q running \
+	  || (echo "error: agent not running — make up-mcp or local-ollama-up first"; exit 1)
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'mkdir -p /workspace/examples/codebase-memory-mcp /home/agent/.local/bin && chown -R agent:agent /workspace/examples /home/agent/.local 2>/dev/null || true'
+	@# Prefer host binary (~270MB) to avoid re-download; fallback install inside cage
+	@if [ -x "$(HOME)/.local/bin/codebase-memory-mcp" ]; then \
+	  docker cp "$(HOME)/.local/bin/codebase-memory-mcp" agent-cage-agent:/home/agent/.local/bin/codebase-memory-mcp; \
+	  docker exec -u root agent-cage-agent bash -lc 'chown agent:agent /home/agent/.local/bin/codebase-memory-mcp && chmod +x /home/agent/.local/bin/codebase-memory-mcp'; \
+	fi
+	@docker cp "$(CM_EXAMPLE)/." agent-cage-agent:/workspace/examples/codebase-memory-mcp/
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chown -R agent:agent /workspace/examples/codebase-memory-mcp && chmod +x /workspace/examples/codebase-memory-mcp/run-in-cage.sh'
+	@echo "==> in-cage codebase-memory-mcp smoke"
+	@docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e PATH=/home/agent/.local/bin:/usr/local/bin:/usr/bin:/bin \
+	  agent-cage-agent bash -lc \
+	  'cd /workspace/examples/codebase-memory-mcp && bash ./run-in-cage.sh'
+	@echo "smoke-codebase-memory: PASS"
+	@mkdir -p "$(CATALOG_ROOT)/pipelines/smoke/codebase-memory-mcp"
+	@printf '| %s | PASS | codebase-memory-mcp | in-cage index+search fixture |\n' \
+	  "$$(date -Iseconds)" >> "$(CATALOG_ROOT)/pipelines/smoke/codebase-memory-mcp/results.latest.md"
+
+smoke-repowise: ensure-project
+	@test -f "$(RW_EXAMPLE)/run-in-cage.sh"
+	@docker inspect agent-cage-agent --format '{{.State.Status}}' 2>/dev/null | grep -q running \
+	  || (echo "error: agent not running — make up-mcp or local-ollama-up first"; exit 1)
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'mkdir -p /workspace/examples/repowise && chown -R agent:agent /workspace/examples'
+	@docker cp "$(RW_EXAMPLE)/." agent-cage-agent:/workspace/examples/repowise/
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chown -R agent:agent /workspace/examples/repowise && chmod +x /workspace/examples/repowise/run-in-cage.sh'
+	@echo "==> in-cage repowise smoke (pip $(REPOWISE_PIP_SPEC))"
+	@docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e PATH=/home/agent/.local/bin:/usr/local/bin:/usr/bin:/bin \
+	  -e REPOWISE_PIP_SPEC=$(REPOWISE_PIP_SPEC) \
+	  agent-cage-agent bash -lc \
+	  'cd /workspace/examples/repowise && bash ./run-in-cage.sh'
+	@echo "smoke-repowise: PASS"
+	@mkdir -p "$(CATALOG_ROOT)/pipelines/smoke/repowise"
+	@printf '| %s | PASS | %s | in-cage health (zero LLM) |\n' \
+	  "$$(date -Iseconds)" "$(REPOWISE_PIP_SPEC)" \
+	  >> "$(CATALOG_ROOT)/pipelines/smoke/repowise/results.latest.md"
+
+smoke-context-tools: smoke-codebase-memory smoke-repowise
+	@test -f "$(CATALOG_ROOT)/pipelines/smoke/context-tools-compare.md"
+	@echo "smoke-context-tools: PASS (see pipelines/smoke/context-tools-compare.md)"

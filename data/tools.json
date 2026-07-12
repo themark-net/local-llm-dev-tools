@@ -127,7 +127,7 @@
         "rag"
       ],
       "pinned_commit": "ee68144af5453addda995a27cce8142999f318fb",
-      "notes": "Grok MCP code-graph server. Install binary via official install.sh --skip-config; config owned by bootstrap/grok-cli."
+      "notes": "Grok MCP code-graph server. Install binary via official install.sh --skip-config; config owned by bootstrap/grok-cli. In-cage smoke: make smoke-codebase-memory (index+search fixture)."
     },
     {
       "name": "LiteLLM",
@@ -284,9 +284,9 @@
         "coding-agent",
         "local-first"
       ],
-      "pinned_commit": "latest-pypi-pin-on-eval",
+      "pinned_commit": "pypi-0.30.0",
       "x_post_id": "2076117959958053084",
-      "notes": "Context optimization layer with published efficiency benchmarks. Complement to codebase-memory-mcp; smoke-test in harness."
+      "notes": "Context optimization layer with published efficiency benchmarks. Complement to codebase-memory-mcp. In-cage smoke: make smoke-repowise (repowise==0.30.0, health zero-LLM). See pipelines/smoke/context-tools-compare.md."
     },
     {
       "name": "gstack",
