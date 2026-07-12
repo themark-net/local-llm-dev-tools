@@ -2,10 +2,20 @@
 
 Place docker-compose overrides, MCP server snippets, and Grok/LiteLLM wiring here as they stabilize.
 
-| Planned | Purpose |
+| Overlay | Purpose |
 |---------|---------|
-| `docker-compose.grok.yaml` | Optional agent image with Grok CLI preinstalled |
-| `mcp-servers.catalog.yaml` | codebase-memory + filesystem servers tuned for catalog workspace |
-| `policy-coding-local.yaml` | Policy preset allowing Ollama/LiteLLM host endpoints |
+| [`grok/`](grok/) | Versioned Grok CLI image + OIDC auth mount |
+| [`local-ollama/`](local-ollama/) | Policy `coding-agent-local` + compose fragment for **host Ollama** |
+| (future) `mcp-servers.catalog.yaml` | codebase-memory + filesystem tuned for catalog workspace |
 
-Until then, edit upstream `mcp-servers.yaml` in the clone or pass policies via `agentcage policy set`.
+**Local Ollama smoke** (from catalog root):
+
+```bash
+make local-ollama-overlay-install
+make local-ollama-up
+make smoke-litellm-ollama
+```
+
+Recipe docs: [examples/litellm-ollama/](../../../examples/litellm-ollama/).
+
+Note: `agentcage up` forces its own compose `-f` list and may ignore extra fragments — `local-ollama-up` / `grok-up` call `docker compose` explicitly.
