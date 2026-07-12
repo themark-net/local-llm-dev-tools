@@ -1,10 +1,38 @@
 # pfy-mentat
 
-**Track • Categorize • Rank • Integrate** local LLM development tools, agents, frameworks, and infrastructure for building robust, self-hosted continuous pipelines.
+**pfy-mentat — Your PFY, a Mentat. It gets sent out, finds the tools, applies the standards, and reports back with receipts.**
 
-Seeded from X (Twitter) posts and community sources. Designed for iterative evaluation and integration with **Grok CLI**, custom agents, **MCP** code memory, LiteLLM routing, containerized harnesses, and production DevOps workflows.
+pfy-mentat is both a high-standard catalog of local LLM development tools *and* an orientation toward building the software that actually deploys and runs them reliably.
+
+The system (the PFY) is sent out to discover candidates, apply strict local-first standards, reject what doesn’t meet them, and deliver only the components that are worth using. The goal is not merely “tools that exist,” but tooling that helps people ship working local LLM systems instead of fighting endless “it works on my machine” problems — both for the tools themselves and for the products built with them.
 
 Repository: https://github.com/themark-net/pfy-mentat
+
+## What it is
+
+- A living, gate-checked catalog of local LLM dev tools, frameworks, patterns, and methods.
+- An operator posture (the PFY) for discovery on X and elsewhere: apply non-negotiable criteria, log every decision with receipts, and keep the catalog current.
+- A deliberate focus on **reproducibility and deployment**, not just “it builds” — components and patterns that support shipping working systems.
+- Practical operator stack: **Grok CLI**, custom agents, **MCP** code memory, LiteLLM routing, **containerized harnesses** (agent-cage), and process docs so multi-session agents stay aligned.
+
+## Core principles
+
+- **Local first, always.** Tools must be self-hostable and runnable on normal developer hardware with minimal ceremony.
+- **Permissive and embeddable.** Licenses must allow real use and modification.
+- **Receipts over vibes.** Every inclusion or rejection is logged with explicit reasoning in [`sources/x-posts.md`](sources/x-posts.md) (and related sources).
+- **Beyond “it builds.”** While many projects struggle to even compile successfully, pfy-mentat orients toward components and practices that support working, deployable results — for the tools themselves and for the systems people build with them.
+
+We recognize that perfect reproducibility is impossible in computing (just as Ansible’s idempotency guarantees can be broken by the environment). The intent is still to raise the baseline: tools and patterns that are more likely to result in something that actually runs and keeps running, rather than another local-only prototype.
+
+## Stage 0 gate
+
+Items must satisfy all of the following before catalog consideration (full rubric: [CATEGORIZATION.md](CATEGORIZATION.md)):
+
+- Runnable self-hosted path under ~5 minutes on a clean Ubuntu or macOS system (or a documented one-liner).
+- Permissive open-source license suitable for embedding and modification.
+- Working hello-world or quickstart that demonstrates the core capability.
+
+Rejections are logged with short, explicit reasons. There is no silent ignoring of candidates.
 
 ## Goals
 
@@ -15,6 +43,28 @@ Repository: https://github.com/themark-net/pfy-mentat
 - Support Grok CLI as primary interface initially, with fallback/hybrid to other identified toolsets based on task requirements.
 - Provide selective, reproducible copies of critical tools via pinned commits (rare subtree) while keeping the tracking repo lean.
 - Test integrations in **versioned container sandboxes** (agent-cage) so host systems stay clean and results are reproducible.
+
+## Using the catalog
+
+| Consume | Path |
+|---------|------|
+| Human catalog | [TOOLS.md](TOOLS.md) — categories, scores, tiers, notes |
+| Machine catalog | [data/tools.json](data/tools.json) — structured, must stay valid JSON |
+| Decision receipts | [sources/x-posts.md](sources/x-posts.md) — examined posts and decisions |
+| Taxonomy & rubric | [CATEGORIZATION.md](CATEGORIZATION.md) — Stage 0 + weighted stages → 0–100 → S/A/B/C |
+| Work queue | [docs/TODO.md](docs/TODO.md) — deeper eval and integration work |
+
+**Default tracking:** pinned commit + shallow clone (`data/tools.json`). Rare subtree only if [SUBTREES.md](SUBTREES.md) criteria are met.
+
+**Catalog triple-write rule:** every processed tool seed must update `sources/x-posts.md` (if social/paper) **and** `TOOLS.md` **and** `data/tools.json` (JSON must parse). `/catalog-docs seed` or `/catalog-docs audit` enforces this.
+
+### Automation (the PFY)
+
+Discovery is not a slowly rotting list: candidates from X (and related monitors such as [@tom_doerr](docs/automation/tom-doer-monitor.md)) are triaged against the gate and relevance rules, with traceable entries for what was examined. Catalog updates happen only when justified. Full daily unattended PFY automation is evolving; until then, operators and agents run the same receipt-backed process by hand or on demand.
+
+### Philosophy on deployment and working results
+
+pfy-mentat does not treat “it builds on my machine” as success. While we cannot eliminate all environment-specific failures, selection criteria and patterns here prioritize components that support reproducible builds *and* working deployments. People using this catalog should spend less time debugging why something only works for the original author and more time shipping functional local LLM systems.
 
 ## Process docs (agents & humans)
 
@@ -49,9 +99,7 @@ After `./bootstrap/grok-cli/install.sh`, these are available:
 Project skill source of truth: [`.grok/skills/`](.grok/skills/) (also vendored under `bootstrap/grok-cli/skills/` for reinstall).  
 One-shot design: [docs/ops/one-shot-workflow.md](docs/ops/one-shot-workflow.md) · ADR-0008.
 
-**Catalog triple-write rule:** every processed tool seed must update `sources/x-posts.md` (if social/paper) **and** `TOOLS.md` **and** `data/tools.json` (JSON must parse). `/catalog-docs seed` or `/catalog-docs audit` enforces this.
-
-## Current Status (v0.4)
+## Current status (v0.4)
 
 - Methodology: taxonomy, rubric, SUBTREES, aggregates intake.
 - Process layout: DESIGN + multi-file ADR + TODO + open questions (ADR-0001).
@@ -59,13 +107,14 @@ One-shot design: [docs/ops/one-shot-workflow.md](docs/ops/one-shot-workflow.md) 
 - **Phase 0 catalog sync:** mobile X seeds Entries 001–010 + structured `data/tools.json` (18 tools); see [TOOLS.md](TOOLS.md).
 - **agent-cage (PNNL)** as primary **container integration lab** under [`harness/agent-cage/`](harness/agent-cage/) (Make + pin + MCP).
 - **`/catalog-docs`** skill for repository documentation consistency.
+- Deploy runbook: [docs/ops/DEPLOY.md](docs/ops/DEPLOY.md).
 
 **Next steps** (authoritative: [docs/TODO.md](docs/TODO.md)):
 
 1. Cage smokes + first tool integrations (LiteLLM, MCP, repowise) — T-0021  
-2. Skill ports (mattpocock / marketing-council / gstack patterns) — T-0011  
-3. Eval harness prototype — T-0003 / [OQ-0002](docs/open-questions/OQ-0002-eval-harness-shape.md)  
-4. Optional colibri / Antigravity — hardware/use-case gated  
+2. Write-guard MCP implement — T-0031  
+3. Skill ports (mattpocock / marketing-council / gstack patterns) — T-0011  
+4. Eval harness prototype — T-0003 / [OQ-0002](docs/open-questions/OQ-0002-eval-harness-shape.md)  
 
 Plans: [docs/ops/plan-mobile-seed-integration.md](docs/ops/plan-mobile-seed-integration.md), [docs/ops/harness-integration-framework.md](docs/ops/harness-integration-framework.md).
 
@@ -141,14 +190,14 @@ Or: `cd harness/agent-cage && make help`.
 Upstream: [pnnl/agent-cage](https://github.com/pnnl/agent-cage). Runtime dir after init: **`~/.agentcage`**.  
 Details: [harness/agent-cage/README.md](harness/agent-cage/README.md).
 
-## Repository Structure
+## Repository structure
 
 ```
 pfy-mentat/
 ├── README.md
 ├── AGENTS.md                  # Agent entry: mandatory reads + workflow practices
 ├── CONTRIBUTING.md            # Seed/tool contribution guidelines
-├── CATEGORIZATION.md          # Taxonomy + staged 0-100 rubric
+├── CATEGORIZATION.md          # Taxonomy + Stage 0 gate + staged 0-100 rubric
 ├── SUBTREES.md                # Selective subtree/submodule/pinned-SHA policy
 ├── TOOLS.md                   # Master scored table + integration notes
 ├── .grok/skills/
@@ -161,10 +210,10 @@ pfy-mentat/
 │   ├── OPEN_QUESTIONS.md      # Central TBD index
 │   ├── adr/                   # ADRs (decisions + rejected paths)
 │   ├── open-questions/        # OQ detail files
-│   ├── ops/                   # Plans + harness framework
+│   ├── ops/                   # DEPLOY, plans, harness framework
 │   └── automation/            # Standing monitors (e.g. tom-doer)
 ├── sources/
-│   ├── x-posts.md             # X/social seed log (Entries 001+)
+│   ├── x-posts.md             # X/social seed log + receipts (Entries 001+)
 │   └── aggregates.md
 ├── data/
 │   └── tools.json             # Structured catalog (must stay valid JSON)
@@ -179,9 +228,7 @@ pfy-mentat/
 
 ## Catalog & scoring (summary)
 
-See [CATEGORIZATION.md](CATEGORIZATION.md) and [TOOLS.md](TOOLS.md). Tools get Stage 0 gate + weighted Stages 1–4 → overall 0–100 → S/A/B/C tiers. Focus: Grok CLI, tool calling, MCP memory, pipeline extensibility.
-
-**Default tracking:** pinned commit + shallow clone (`data/tools.json`). Rare subtree only if [SUBTREES.md](SUBTREES.md) criteria are met.
+See [CATEGORIZATION.md](CATEGORIZATION.md) and [TOOLS.md](TOOLS.md). Tools get Stage 0 gate + weighted Stages 1–4 → overall 0–100 → S/A/B/C tiers. Focus: Grok CLI, tool calling, MCP memory, pipeline extensibility, and deployability.
 
 ### Highlighted tools
 
@@ -200,12 +247,17 @@ Full table: [TOOLS.md](TOOLS.md). Seeds: [sources/x-posts.md](sources/x-posts.md
 ## How to contribute
 
 1. Read [CONTRIBUTING.md](CONTRIBUTING.md).
-2. New X/tool: apply rubric → **triple-write** x-posts + TOOLS.md + tools.json (or run `/catalog-docs seed`).
-3. Integration experiment: prefer `harness/agent-cage` for isolation; record notes in TOOLS.md.
-4. Architecture pivot: `/adr`. Unsettled: `/open-questions`. Docs drift: `/catalog-docs audit`.
+2. High-signal tools that meet the Stage 0 gate are welcome — open an issue or PR with the link and a short justification.
+3. New X/tool: apply rubric → **triple-write** x-posts + TOOLS.md + tools.json (or run `/catalog-docs seed`). Automation and operators will triage with receipts on the next pass.
+4. Integration experiment: prefer `harness/agent-cage` for isolation; record notes in TOOLS.md.
+5. Architecture pivot: `/adr`. Unsettled: `/open-questions`. Docs drift: `/catalog-docs audit`.
 
-All additions should improve the Grok CLI + MCP + pipeline vision or fill a clear gap in the scored catalog.
+All additions should improve the local-first, deployable stack (Grok CLI + MCP + cage + pipeline) or fill a clear gap in the scored catalog.
+
+## License
+
+MIT for the catalog and documentation in this repository. Individual tools carry their own licenses.
 
 ---
 
-*v0.4 — Phase 0 catalog sync, agent-cage harness, `/catalog-docs` skill. Process backbone from v0.3 (DESIGN/ADR/TODO/OQ).*
+*v0.4 — Phase 0 catalog sync, agent-cage harness, `/catalog-docs` skill, deploy runbook. Process backbone from v0.3 (DESIGN/ADR/TODO/OQ). Vision: receipts over vibes; beyond “it builds.”*
