@@ -146,6 +146,17 @@ This enables traceability from social signal to evaluated component.
 - **Notes**: Outstanding complement to gstack (Entry 010) and other agentic/harness entries. gstack excels at role-specialized slash-command skills and internal workflows; Multica adds the project management board, issue assignment, human+agent timeline, and skill compounding abstraction on top. Strong overlap in supported agents (Claude Code, Codex, Cursor, OpenClaw, etc.) but Multica's "teammates on the board" model reduces redundancy while enabling hybrid teams. Low redundancy risk; highly synergistic. Fits evaluation criteria well: high workflow relevance, Docker self-host, multi-agent surface. Does **not** replace agent-cage (isolation lab). Recommend: catalog done; optional later self-host smoke; explore skill interoperability with bootstrap/gstack patterns. Not a Grok-first requirement for core stack.
 - **Status**: **Triple-write complete** (x-posts + TOOLS.md + tools.json) 2026-07-12
 
+### Entry 013: Spec Kit — GitHub's Spec-First Structured Workflow for Agentic Coding
+
+- **URL**: https://x.com/i/status/2076005136736850402 (and https://github.com/github/spec-kit)
+- **Date**: 2026-07-11 (post)
+- **Poster**: angel (@angeldot_)
+- **Summary / Key Claims**: GitHub's Spec Kit solves "vibe coding" problems with AI agents. Forces the AI to create a structured specification BEFORE touching code: /constitution (rules/standards) → /specify (what to build) → /clarify (questions) → /plan (architecture/stack) → /tasks (ordered tasks) → /implement (execution). Reduces absurd errors, inconsistent code, and unpredictable results when working with agents. 120K+ stars, 10K+ forks, open source. Compatible with Claude Code, Cursor, Copilot, Codex, Gemini CLI, and +25 agents.
+- **Extracted Repos / Tools**: Primary: https://github.com/github/spec-kit (120K+ stars). CLI-driven spec-first pipeline that agents must follow before any implementation.
+- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Structured Workflow & Prompt Engineering. High-signal GitHub-backed workflow guardrail.
+- **Notes**: Excellent complement to gstack (Entry 010) and Multica (Entry 012). Provides the mandatory "spec/planning guardrail" layer before code is touched. Strong overlap in supported agents (Claude Code ecosystem) but solves the predictability/vibe-coding pain point directly. Low redundancy risk — it's a process enforcer that improves results for all downstream tools (gstack skills, Multica assignment, etc.). High fit for evaluation criteria: Very High Workflow Relevance (Planning + Implementation), High Integration Ease (works with many cataloged agents), High Reproducibility (open source CLI commands + GitHub backing), Low Redundancy. Perfect for the repo's "reproduction of best practices" goal — provides a reproducible, spec-driven agentic coding workflow. Recommend: (1) Catalog as core structured workflow tool. (2) Strong candidate to pair with gstack + Multica for end-to-end planning-to-shipping reproduction templates. (3) Consider as baseline for enhancing our own AGENTS.md or project-process docs.
+- **Status**: Processed and cataloged (added as major structured workflow resource; high priority for evaluation strategy integration)
+
 ## Future Entries Format
 
 When adding new X-sourced tools or papers:
