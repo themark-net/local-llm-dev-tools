@@ -1,7 +1,7 @@
 {
-  "version": "0.3.1",
-  "last_updated": "2026-07-11T21:00:00Z",
-  "description": "Structured catalog of local LLM dev tools for scripting, pipeline automation, and dashboard generation. v0.3 adds first-party Grok CLI bootstrap path and MCP/skill stack entries.",
+  "version": "0.3.2",
+  "last_updated": "2026-07-12T03:30:00Z",
+  "description": "Structured catalog of local LLM dev tools for scripting, pipeline automation, and dashboard generation. v0.3 adds first-party Grok CLI bootstrap path and MCP/skill stack entries. v0.3.2 adds colibri (extreme low-resource MoE inference engine).",
   "schema_notes": {
     "required_for_all": [
       "name",
@@ -39,7 +39,7 @@
         "code-memory",
         "pipeline",
         "local-first"
-      ],
+      },
       "bootstrap_path": "bootstrap/grok-cli",
       "notes": "First-party replayable install: skills (adr/docs/open-questions/karpathy-guidelines), ponytail skills.paths, codebase-memory MCP config, memory enabled. Run ./bootstrap/grok-cli/install.sh"
     },
@@ -60,7 +60,7 @@
         "pipeline",
         "local-first",
         "agentic"
-      ],
+      },
       "bootstrap_path": "bootstrap/project-process",
       "notes": "Scaffold DESIGN/ADR/TODO/OQ/AGENTS for new projects. Skills: project-process + adr/docs/open-questions. Verdict: light framework sufficient vs adr-tools/SaaS."
     },
@@ -148,6 +148,36 @@
       "notes": "Default local backend. Grok CLI entrypoint via base_url. No subtree (large history). Use pinned + shallow clone."
     },
     {
+      "name": "colibri",
+      "primary_category": "Inference & Serving",
+      "github": "https://github.com/JustVugg/colibri",
+      "scores": {
+        "s1": 92,
+        "s2": 78,
+        "s3": 85,
+        "s4": 88,
+        "overall": 86
+      },
+      "tier": "A",
+      "tags": [
+        "inference-engine",
+        "moe",
+        "cpu-only",
+        "low-ram",
+        "disk-streaming",
+        "pure-c",
+        "zero-deps",
+        "openai-compatible",
+        "glm-5.2",
+        "extreme-optimization",
+        "local-first",
+        "consumer-hw"
+      ],
+      "pinned_commit": "5198feec7c79a50ab83ff15a48f2e3070c4edec1",
+      "x_post_id": "2075731830477877612",
+      "notes": "Extreme low-resource inference engine for GLM-5.2 744B MoE (~40B active params). Pure C, zero dependencies, streams experts from disk while keeping dense part (~17B params, ~9.9GB int4) resident in RAM. Enables flagship-scale local inference on ~25GB laptop / no GPU. CLI chat + OpenAI-compatible serve mode. Tradeoff: low tokens/s (0.05-1+ tok/s on consumer NVMe). High novelty, rapid adoption signal (2k+ stars quickly). Strong fit for local agent pipelines needing massive reasoning/context on constrained hardware. Integrates via serve endpoint + LiteLLM. See sources/x-posts.md for X seed analysis and community speed notes. Pinned recent main (Tauri desktop addition)."
+    },
+    {
       "name": "Continue.dev",
       "primary_category": "Coding & Dev Agents",
       "github": "https://github.com/continuedev/continue",
@@ -229,6 +259,15 @@
       "url": "https://x.com/i/status/2075994424484732984",
       "status": "pending_content",
       "tools_extracted": []
+    },
+    {
+      "id": "2075731830477877612",
+      "url": "https://x.com/i/status/2075731830477877612",
+      "author": "@chenzeling4 (Zane Chen)",
+      "date": "2026-07-11",
+      "status": "processed",
+      "tools_extracted": ["colibri"],
+      "summary": "Colibri: pure C, zero-dep inference engine running GLM-5.2 744B MoE (~40B active) on ~25GB RAM laptop by streaming experts from disk. Single ~2400-line C core. CLI + OpenAI serve mode. High engagement (3k+ likes, 3.5k bookmarks)."
     }
   ]
 }
