@@ -7,7 +7,7 @@ and unrelated sections). Only upserts:
   [memory] enabled = true
   [ui] permission_mode = "..."
   [mcp_servers.codebase-memory] (full owned block)
-  [skills] paths += ponytail path (creates [skills] if missing)
+  [skills] paths += one or more external skill pack dirs (creates [skills] if missing)
 
 Creates a timestamped backup by default.
 
@@ -116,9 +116,10 @@ def consume_toml_value(lines: list[str], start: int) -> tuple[str, int]:
 def merge(
     text: str,
     *,
-    ponytail_path: str | None,
+    skills_paths: list[str] | None,
     permission_mode: str | None,
 ) -> str:
+    skills_paths = [p for p in (skills_paths or []) if p]
     lines = text.splitlines(keepends=True)
 
     out: list[str] = []
@@ -144,8 +145,8 @@ def merge(
             out.append(f'permission_mode = "{permission_mode}"\n')
             ui_has_permission = True
         if sec == "skills":
-            if ponytail_path and not skills_has_paths:
-                out.append(f'paths = ["{ponytail_path}"]\n')
+            if skills_paths and not skills_has_paths:
+                out.append(f"paths = {format_string_array(skills_paths)}\n")
                 skills_has_paths = True
             if not skills_has_ignore:
                 out.append("ignore = []\n")
@@ -228,10 +229,11 @@ def merge(
             if re.match(r"^paths\s*=", raw):
                 skills_has_paths = True
                 value_text, next_i = consume_toml_value(lines, i)
-                if ponytail_path:
+                if skills_paths:
                     items = parse_string_array(value_text)
-                    if not paths_contain(items, ponytail_path):
-                        items.append(ponytail_path)
+                    for sp in skills_paths:
+                        if not paths_contain(items, sp):
+                            items.append(sp)
                     out.append(f"paths = {format_string_array(items)}\n")
                 else:
                     # preserve original multi-line block
@@ -285,10 +287,10 @@ def merge(
         out.append("args = []\n")
         out.append("enabled = true\n")
 
-    if ponytail_path and not seen_skills:
+    if skills_paths and not seen_skills:
         ensure_trailing_nl()
         out.append("\n[skills]\n")
-        out.append(f'paths = ["{ponytail_path}"]\n')
+        out.append(f"paths = {format_string_array(skills_paths)}\n")
         out.append("ignore = []\n")
         out.append("disabled = []\n")
 
@@ -298,7 +300,18 @@ def merge(
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--config", type=Path, required=True)
-    ap.add_argument("--ponytail-path", default=None)
+    ap.add_argument(
+        "--skills-path",
+        action="append",
+        default=[],
+        dest="skills_paths",
+        help="Absolute path to add to [skills].paths (repeatable)",
+    )
+    ap.add_argument(
+        "--ponytail-path",
+        default=None,
+        help="Deprecated alias: same as one --skills-path",
+    )
     ap.add_argument(
         "--permission-mode",
         default="always-approve",
@@ -311,7 +324,10 @@ def main() -> int:
     path = args.config.expanduser()
     text = path.read_text(encoding="utf-8") if path.exists() else ""
     perm = args.permission_mode if args.permission_mode != "" else None
-    new = merge(text, ponytail_path=args.ponytail_path, permission_mode=perm)
+    paths = list(args.skills_paths or [])
+    if args.ponytail_path:
+        paths.append(args.ponytail_path)
+    new = merge(text, skills_paths=paths, permission_mode=perm)
 
     # Validate TOML before writing
     try:

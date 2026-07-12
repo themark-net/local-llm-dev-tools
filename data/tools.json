@@ -331,9 +331,9 @@
         "grok-cli",
         "composable"
       ],
-      "pinned_commit": "latest-main-pin-on-vendor",
+      "pinned_commit": "391a2701dd94",
       "x_post_id": "entry-008",
-      "notes": "Composable engineering skills. Vendor selected skills via skills.paths snapshot like ponytail."
+      "notes": "X Entry 008. paths snapshot: skills-external/mattpocock/ (tdd, code-review, to-spec). T-0011/ADR-0009."
     },
     {
       "name": "marketing-skills (marketing-council)",
@@ -354,9 +354,10 @@
         "prompt-pack",
         "grok-cli"
       ],
-      "pinned_commit": "latest-main-pin-on-vendor",
+      "pinned_commit": "5139746081be",
       "x_post_id": "2076048436538048530",
-      "notes": "47-skill pack; flagship marketing-council + dissenter. Port SKILL.md patterns into bootstrap/grok-cli skills; do not embed full pack unless customized."
+      "notes": "X Entry 004. First-party marketing-council port under bootstrap/grok-cli/skills/. T-0011/ADR-0009.",
+      "bootstrap_path": "bootstrap/grok-cli/skills/marketing-council"
     },
     {
       "name": "Antigravity-Manager",

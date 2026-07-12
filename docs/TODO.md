@@ -27,7 +27,7 @@
 | ID | Priority | Status | Item | Open questions | Depends | Notes |
 |----|----------|--------|------|----------------|---------|-------|
 | T-0012 | P1 | doing | LiteLLM + Ollama recipe under `examples/` keyed by DEPLOY_PROFILE | [OQ-0002](open-questions/OQ-0002-eval-harness-shape.md) | T-0030 | **local-only MVP shipped** (`examples/litellm-ollama/`, `make smoke-litellm-ollama`); balanced/max recipes still open |
-| T-0011 | P1 | todo | Phase 1 skill ports: marketing-council first-party + mattpocock paths subset | — | — | ADR-0009 hybrid; see OQ-0006 resolution |
+
 | T-0003 | P1 | blocked | Prototype evaluation harness | [OQ-0002](open-questions/OQ-0002-eval-harness-shape.md) | T-0012 | |
 | T-0040 | P3 | todo | **Nice-to-have:** validate integrated setup with OpenCode and Claude Code (same cage/profiles/env) | — | — | Universal harness goal; Grok-first for now |
 | T-0014 | P2 | todo | gstack role-pattern skills / AGENTS recipes (docs-first, not full embed) | — | T-0011 | ADR-0009: docs/AGENTS first |
@@ -59,6 +59,7 @@
 | T-0031 | P1 | done | **Write-guard MCP implement** (stdio server + cage overlay) | harness/write-guard-mcp v0.1; make smoke-write-guard; OQ-0009 audit default |
 | T-0032 | P1 | done | **One-shot skill polish + example DoDs** for cage/tool smokes | docs/ops/one-shot-example-dods.md; skill points at make smoke-* |
 | T-0006 | P2 | done | Module docs bootstrap + harness via `/catalog-docs` | docs/modules/* for grok-cli, project-process, agent-cage, write-guard, smokes |
+| T-0011 | P1 | done | Phase 1 skill ports: marketing-council first-party + mattpocock paths subset | ADR-0009; council in skills/; mattpocock tdd/code-review/to-spec via paths |
 
 ## How to use
 
