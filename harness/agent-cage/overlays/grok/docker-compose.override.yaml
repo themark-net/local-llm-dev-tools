@@ -1,0 +1,21 @@
+# Compose override: use Grok-enabled agent image.
+# Installed into $AGENTCAGE_DIR/docker/ by: make grok-overlay-install
+# Docker Compose auto-merges docker-compose.override.yaml in the same directory.
+#
+# Auth: set XAI_API_KEY in the environment or in $AGENTCAGE_DIR/.env (not in git).
+#   echo "XAI_API_KEY=xai-..." >> ~/.agentcage/.env
+
+services:
+  agent:
+    image: local-llm-dev-tools/agent-cage-grok:0.1.0
+    build:
+      context: ./overlays-grok
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: agent-cage-agent:latest
+    environment:
+      - XAI_API_KEY=${XAI_API_KEY:-}
+      - PATH=/home/agent/.local/bin:/home/agent/.grok/bin:/opt/agent-env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    # Optional: reuse host grok auth (uncomment if you accept that risk)
+    # volumes:
+    #   - ${HOME}/.grok/auth.json:/home/agent/.grok/auth.json:ro

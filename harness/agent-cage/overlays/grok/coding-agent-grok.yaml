@@ -1,0 +1,101 @@
+# Policy: coding-agent + xAI / Grok API hosts (whitelist mode)
+# Install: make grok-overlay-install  → copies as policies/coding-agent-grok.yaml
+# Use:     POLICY=coding-agent-grok make up-mcp
+#      or: agentcage up --mcp --policy coding-agent-grok
+
+policy:
+  name: "coding-agent-grok"
+  version: "1.0"
+  mode: "whitelist"
+
+  defaults:
+    max_request_size_bytes: 10485760
+    max_response_size_bytes: 104857600
+    timeout_seconds: 120
+    log_level: "info"
+    log_bodies: false
+
+  domains:
+    # --- xAI / Grok ---
+    - pattern: "x.ai"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "*.x.ai"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "api.x.ai"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "cli-chat-proxy.grok.com"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "*.grok.com"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "accounts.x.ai"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "console.x.ai"
+      methods: ["GET", "HEAD", "POST"]
+
+    # --- AI APIs (from upstream coding-agent) ---
+    - pattern: "api.openai.com"
+      methods: ["POST", "GET"]
+    - pattern: "api.anthropic.com"
+      methods: ["POST", "GET"]
+    - pattern: "generativelanguage.googleapis.com"
+      methods: ["POST", "GET"]
+    - pattern: "api.groq.com"
+      methods: ["POST", "GET"]
+
+    # --- Package Registries ---
+    - pattern: "*.pypi.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "files.pythonhosted.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "registry.npmjs.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "*.npmjs.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "registry.yarnpkg.com"
+      methods: ["GET", "HEAD"]
+    - pattern: "crates.io"
+      methods: ["GET", "HEAD"]
+    - pattern: "static.crates.io"
+      methods: ["GET", "HEAD"]
+    - pattern: "rubygems.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "pkg.go.dev"
+      methods: ["GET", "HEAD"]
+    - pattern: "proxy.golang.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "sum.golang.org"
+      methods: ["GET", "HEAD"]
+
+    # --- Source Code ---
+    - pattern: "github.com"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "*.githubusercontent.com"
+      methods: ["GET", "HEAD"]
+    - pattern: "gitlab.com"
+      methods: ["GET", "HEAD", "POST"]
+    - pattern: "*.gitlab.com"
+      methods: ["GET", "HEAD"]
+    - pattern: "bitbucket.org"
+      methods: ["GET", "HEAD"]
+
+    # --- OS Packages ---
+    - pattern: "*.ubuntu.com"
+      methods: ["GET", "HEAD"]
+    - pattern: "*.debian.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "dl-cdn.alpinelinux.org"
+      methods: ["GET", "HEAD"]
+
+    # --- Documentation ---
+    - pattern: "docs.python.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "nodejs.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "developer.mozilla.org"
+      methods: ["GET", "HEAD"]
+    - pattern: "stackoverflow.com"
+      methods: ["GET", "HEAD"]
+    - pattern: "*.stackoverflow.com"
+      methods: ["GET", "HEAD"]
+    - pattern: "raw.githubusercontent.com"
+      methods: ["GET", "HEAD"]

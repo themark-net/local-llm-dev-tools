@@ -34,7 +34,8 @@
 | T-0011 | P1 | blocked | Phase 1 skill ports: mattpocock subset + marketing-council | [OQ-0006](open-questions/OQ-0006-skill-port-strategy.md) | — | Need port strategy |
 | T-0013 | P1 | todo | repowise smoke vs codebase-memory (prefer in-cage) | — | T-0021 | |
 | T-0003 | P1 | blocked | Prototype evaluation harness | [OQ-0002](open-questions/OQ-0002-eval-harness-shape.md) | T-0012 | |
-| T-0022 | P2 | blocked | Grok-in-image overlay (versioned Dockerfile) | [OQ-0005](open-questions/OQ-0005-grok-in-cage-strategy.md) | T-0021 | After cage baseline; design secrets at runtime |
+| T-0022 | P1 | doing | **Grok-in-image overlay** (versioned Dockerfile + policy) | [OQ-0005](open-questions/OQ-0005-grok-in-cage-strategy.md) | — | Branch `feature/agent-cage-grok-image`; build/smoke on operator machine |
+| T-0040 | P3 | todo | **Nice-to-have:** validate integrated setup with OpenCode and Claude Code (same cage/profiles/env) | — | — | Universal harness goal; Grok-first for now |
 | T-0014 | P2 | blocked | gstack role-pattern skills / AGENTS recipes | [OQ-0006](open-questions/OQ-0006-skill-port-strategy.md) | T-0011 | |
 | T-0015 | P2 | blocked | Optional Antigravity-Manager eval | [OQ-0007](open-questions/OQ-0007-antigravity-need.md) | — | |
 | T-0016 | P2 | blocked | Optional colibri build+serve | [OQ-0008](open-questions/OQ-0008-colibri-weights-ok.md) | — | |

@@ -22,8 +22,8 @@
 3. **Claude/Cline inside cage for adversarial tests only; Grok stays host** — dual-harness
 4. **Defer** — use cage for policy/MCP/network tests without a coding agent until later
 
-**Recommendation:** Start with **(1)** for speed (matches “host agent, cage for blast radius”); add **(2)** overlay only if we need full Grok sessions under network policy.
+**Recommendation:** Start with **(1)** for speed; add **(2)** as optional versioned overlay.
 
 **Resolution notes:**
 
-- (awaiting operator choice)
+- **2026-07-12:** Operator chose to pursue **(2) Grok-in-image** now that cage baseline is green. Scaffold under `harness/agent-cage/overlays/grok/` on branch `feature/agent-cage-grok-image`. Host-Grok remains valid for catalog work. Status remains open until smoke (`grok --version` + optional headless ping) passes under policy `coding-agent-grok`.

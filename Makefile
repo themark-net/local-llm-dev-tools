@@ -10,7 +10,8 @@ HARNESS := harness/agent-cage
 
 .PHONY: help cage-doctor cage-setup cage-init cage-up cage-up-mcp cage-down \
 	cage-shell cage-status cage-test cage-logs cage-smoke-host catalog-json \
-	env-init env-check
+	env-init env-check cage-grok-install cage-grok-build cage-grok-up \
+	cage-grok-smoke cage-grok-uninstall
 
 help:
 	@echo "local-llm-dev-tools"
@@ -30,6 +31,10 @@ help:
 	@echo "  make cage-test        Policy tests (services must already be up)"
 	@echo "  make cage-down        Stop sandbox"
 	@echo "  make cage-smoke-host  Host-only smoke (no containers)"
+	@echo ""
+	@echo "Grok-in-cage (versioned image overlay):"
+	@echo "  make cage-grok-install / cage-grok-build / cage-grok-up / cage-grok-smoke"
+	@echo "  make cage-grok-uninstall"
 	@echo ""
 	@echo "Or:  cd harness/agent-cage && make help"
 	@echo ""
@@ -74,6 +79,21 @@ cage-smoke-host:
 
 catalog-json:
 	@python3 -c "import json; json.load(open('data/tools.json')); print('data/tools.json: OK')"
+
+cage-grok-install:
+	@$(MAKE) -C $(HARNESS) grok-overlay-install
+
+cage-grok-build:
+	@$(MAKE) -C $(HARNESS) grok-overlay-build
+
+cage-grok-up:
+	@$(MAKE) -C $(HARNESS) grok-up
+
+cage-grok-smoke:
+	@$(MAKE) -C $(HARNESS) grok-smoke
+
+cage-grok-uninstall:
+	@$(MAKE) -C $(HARNESS) grok-overlay-uninstall
 
 env-init:
 	@if [ -f .env ]; then \

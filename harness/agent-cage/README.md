@@ -92,4 +92,13 @@ Repo root mirrors these as `make cage-*`.
 
 ## Grok
 
-Grok-on-host vs Grok-in-image is **OQ-0005**. First cage test does **not** require Grok inside the container — use `shell` + MCP/policy tests.
+- **Host Grok:** always fine for catalog work.
+- **Grok-in-image:** optional versioned overlay — see [overlays/grok/README.md](overlays/grok/README.md).
+
+```bash
+make grok-overlay-install
+make grok-overlay-build
+# XAI_API_KEY in ~/.agentcage/.env
+make grok-up
+make grok-smoke    # grok --version inside container
+```
