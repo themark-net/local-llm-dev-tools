@@ -33,8 +33,9 @@ help:
 	@echo "  make cage-smoke-host  Host-only smoke (no containers)"
 	@echo ""
 	@echo "Grok-in-cage (versioned image overlay):"
-	@echo "  make cage-grok-install / cage-grok-build / cage-grok-up / cage-grok-smoke"
-	@echo "  make cage-grok-uninstall"
+	@echo "  make cage-grok-install / cage-grok-auth-import / cage-grok-build"
+	@echo "  make cage-grok-up / cage-grok-smoke / cage-grok-uninstall"
+	@echo "  Auth: import host ~/.grok/auth.json (browser/OIDC) or device-login in cage"
 	@echo ""
 	@echo "Or:  cd harness/agent-cage && make help"
 	@echo ""
@@ -82,6 +83,9 @@ catalog-json:
 
 cage-grok-install:
 	@$(MAKE) -C $(HARNESS) grok-overlay-install
+
+cage-grok-auth-import:
+	@$(MAKE) -C $(HARNESS) grok-auth-import
 
 cage-grok-build:
 	@$(MAKE) -C $(HARNESS) grok-overlay-build

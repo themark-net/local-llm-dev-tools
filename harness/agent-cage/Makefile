@@ -56,10 +56,12 @@ help:
 	@echo "         dashboard smoke-host smoke-integration"
 	@echo "Grok-in-image:"
 	@echo "  make grok-overlay-install   # copy overlay into AGENTCAGE_DIR"
+	@echo "  make grok-auth-import       # copy host ~/.grok/auth.json (OIDC session) into cage"
 	@echo "  make grok-overlay-build     # build $(GROK_IMAGE)"
 	@echo "  make grok-up                # up --mcp with coding-agent-grok policy"
-	@echo "  make grok-smoke             # shell check: grok --version (stack must be up)"
+	@echo "  make grok-smoke             # grok --version inside container"
 	@echo "  make grok-overlay-uninstall # remove override from runtime project"
+	@echo "  Auth: browser/OIDC → auth.json (primary); XAI_API_KEY optional fallback"
 
 doctor:
 	@echo "== OS =="; uname -a || true
@@ -166,20 +168,40 @@ smoke-integration: smoke-host ensure-cli
 grok-overlay-install: ensure-project
 	@test -f "$(GROK_OVERLAY)/Dockerfile"
 	@mkdir -p "$(AGENTCAGE_DIR)/docker/overlays-grok"
+	@mkdir -p "$(AGENTCAGE_DIR)/grok-home"
+	@chmod 700 "$(AGENTCAGE_DIR)/grok-home"
 	@cp "$(GROK_OVERLAY)/Dockerfile" "$(AGENTCAGE_DIR)/docker/overlays-grok/Dockerfile"
 	@cp "$(GROK_OVERLAY)/docker-compose.override.yaml" "$(AGENTCAGE_DIR)/docker/docker-compose.override.yaml"
 	@cp "$(GROK_OVERLAY)/coding-agent-grok.yaml" "$(AGENTCAGE_DIR)/policies/coding-agent-grok.yaml"
+	@# ensure auth.json path exists so volume mount is a file-friendly dir
+	@touch "$(AGENTCAGE_DIR)/grok-home/.keep"
 	@echo "Installed Grok overlay into $(AGENTCAGE_DIR)"
 	@echo "  docker/docker-compose.override.yaml"
 	@echo "  docker/overlays-grok/Dockerfile"
 	@echo "  policies/coding-agent-grok.yaml"
-	@echo "Next: ensure XAI_API_KEY in $(AGENTCAGE_DIR)/.env then: make grok-overlay-build && make grok-up"
+	@echo "  grok-home/  (mount as /home/agent/.grok — put auth.json here)"
+	@echo "Next: make grok-auth-import   # copy host browser/OIDC session"
+	@echo "      make grok-overlay-build && make grok-up"
+
+grok-auth-import: ensure-project
+	@test -f "$(HOME)/.grok/auth.json" \
+	  || (echo "error: no host $(HOME)/.grok/auth.json — run 'grok login' on the host first"; exit 1)
+	@mkdir -p "$(AGENTCAGE_DIR)/grok-home"
+	@chmod 700 "$(AGENTCAGE_DIR)/grok-home"
+	@cp -a "$(HOME)/.grok/auth.json" "$(AGENTCAGE_DIR)/grok-home/auth.json"
+	@chmod 600 "$(AGENTCAGE_DIR)/grok-home/auth.json"
+	@echo "Imported host OIDC/browser session → $(AGENTCAGE_DIR)/grok-home/auth.json"
+	@echo "  auth_mode/email (redacted check):"
+	@python3 -c "import json; d=json.load(open('$(AGENTCAGE_DIR)/grok-home/auth.json')); \
+	  v=next(iter(d.values())); print('  mode=', v.get('auth_mode'), ' email=', v.get('email','?'), ' expires_at=', v.get('expires_at','?'))"
+	@echo "Re-run import after host 'grok login' if the cage session expires."
 
 grok-overlay-uninstall:
 	@rm -f "$(AGENTCAGE_DIR)/docker/docker-compose.override.yaml"
 	@rm -rf "$(AGENTCAGE_DIR)/docker/overlays-grok"
 	@rm -f "$(AGENTCAGE_DIR)/policies/coding-agent-grok.yaml"
-	@echo "Removed Grok overlay files from $(AGENTCAGE_DIR) (image left in place)"
+	@echo "Removed Grok overlay compose/policy (left grok-home/ and image in place)"
+	@echo "To wipe imported auth: rm -rf $(AGENTCAGE_DIR)/grok-home"
 
 grok-overlay-build: ensure-project
 	@docker image inspect agent-cage-agent:latest >/dev/null 2>&1 \
@@ -196,14 +218,22 @@ grok-overlay-build: ensure-project
 grok-up: ensure-cli ensure-project
 	@test -f "$(AGENTCAGE_DIR)/docker/docker-compose.override.yaml" \
 	  || (echo "error: run make grok-overlay-install first"; exit 1)
-	@if [ -z "$$XAI_API_KEY" ] && [ -f "$(AGENTCAGE_DIR)/.env" ]; then \
-	  set -a; . "$(AGENTCAGE_DIR)/.env"; set +a; \
+	@mkdir -p "$(AGENTCAGE_DIR)/grok-home"
+	@if [ ! -f "$(AGENTCAGE_DIR)/grok-home/auth.json" ] && [ -z "$$XAI_API_KEY" ]; then \
+	  if [ -f "$(AGENTCAGE_DIR)/.env" ]; then set -a; . "$(AGENTCAGE_DIR)/.env"; set +a; fi; \
 	fi
-	@if [ -z "$$XAI_API_KEY" ]; then \
-	  echo "warn: XAI_API_KEY not set — grok may fail auth until you add it to $(AGENTCAGE_DIR)/.env"; \
+	@if [ ! -f "$(AGENTCAGE_DIR)/grok-home/auth.json" ] && [ -z "$$XAI_API_KEY" ]; then \
+	  echo "warn: no grok-home/auth.json and no XAI_API_KEY"; \
+	  echo "  → make grok-auth-import   (use host browser/OIDC session), or"; \
+	  echo "  → inside cage: grok login --device-auth, or"; \
+	  echo "  → set XAI_API_KEY in $(AGENTCAGE_DIR)/.env (API key fallback)"; \
 	fi
 	$(MAKE) up-mcp POLICY=coding-agent-grok
 
 grok-smoke: ensure-cli ensure-project
 	@echo "==> grok --version inside agent container"
-	docker exec -u agent agent-cage-agent bash -lc 'export PATH="/home/agent/.local/bin:/home/agent/.grok/bin:$$PATH"; grok --version'
+	docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e GROK_HOME=/home/agent/.grok \
+	  -e PATH=/home/agent/.local/bin:/home/agent/.grok/bin:/usr/bin:/bin \
+	  agent-cage-agent bash -lc 'grok --version'

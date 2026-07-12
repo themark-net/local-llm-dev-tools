@@ -48,6 +48,17 @@ make env-check                # validate required vars for profile
 
 Exact model IDs live in `config/litellm/` when that recipe lands (T-0012) — not hard-coded here.
 
+### Grok Build auth (not just an API key)
+
+Interactive **Grok CLI / Grok Build** uses **browser OIDC** (`grok login` → `auth.x.ai`) and stores the session in **`~/.grok/auth.json`** (`auth_mode: oidc`, refresh tokens).  
+
+`XAI_API_KEY` from console.x.ai is only a **fallback** when no session exists (CI). For agent-cage, prefer:
+
+1. `make cage-grok-auth-import` (copy host `auth.json` into `~/.agentcage/grok-home/`), or  
+2. `grok login --device-auth` inside the cage shell.
+
+See `harness/agent-cage/overlays/grok/README.md`.
+
 ## Cage interaction
 
 - **local-only:** cage still useful for isolation; allowlist should include local registries/Ollama host gateway as needed.
