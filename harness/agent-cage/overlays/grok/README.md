@@ -29,11 +29,25 @@ make cage-grok-install
 make cage-grok-auth-import   # ~/.grok/auth.json → ~/.agentcage/grok-home/auth.json
 make cage-grok-build         # rebuild after Dockerfile changes
 make cage-grok-up            # MUST use this — not plain cage-up-mcp / agentcage up
-make cage-grok-smoke         # expect grok 0.x.x + auth.json present
+make cage-workspace-sync     # catalog repo → /workspace/pfy-mentat + MCP preset
+make cage-grok-ready         # T-0045: version + workspace + filesystem MCP
 make cage-shell
-# [cage] grok --version
-# [cage] grok -p "ping" --always-approve   # uses imported session
+# [cage] cd /workspace/pfy-mentat && grok --version
+# [cage] cd /workspace/pfy-mentat && grok mcp list   # filesystem → mcp-host
+# [cage] grok -p "ping" --always-approve             # uses imported session
 ```
+
+### Filesystem MCP on the local (catalog) repo
+
+| Piece | Path |
+|-------|------|
+| Host catalog | git clone of pfy-mentat |
+| Cage workspace tree | `~/.agentcage/workspace/pfy-mentat` ← `make cage-workspace-sync` |
+| In-container | `/workspace/pfy-mentat` |
+| MCP server | cage **mcp-host** `@modelcontextprotocol/server-filesystem` on **`/workspace`** |
+| Grok project config | `/workspace/pfy-mentat/.grok/config.toml` (HTTP URL to mcp-host) |
+
+`make cage-grok-ready` proves: Grok binary + auth, synced catalog tree, MCP initialize, `grok mcp list` shows **filesystem**.
 
 **Pitfalls fixed in this overlay:**
 
@@ -86,10 +100,13 @@ Only if you use console API keys; subscription browser users should prefer (1) o
 | `grok-auth-import` | Copy host `~/.grok/auth.json` → `~/.agentcage/grok-home/` |
 | `grok-overlay-build` | Build `pfy-mentat/agent-cage-grok:0.1.0` |
 | `grok-up` | `up --mcp` with `coding-agent-grok` policy |
-| `grok-smoke` | `grok --version` in container |
+| `workspace-sync` | rsync catalog → `workspace/pfy-mentat` + MCP preset |
+| `grok-mcp-preset` | project `.grok/config.toml` → filesystem MCP |
+| `grok-smoke` | `grok --version` + auth.json readable |
+| `grok-ready` | **T-0045** full smoke (version + workspace + MCP) |
 | `grok-overlay-uninstall` | Remove overlay files (not host auth) |
 
-Repo root: `make cage-grok-*`.
+Repo root: `make cage-grok-*` / `make cage-workspace-sync` / `make cage-grok-ready`.
 
 ## Security
 
@@ -105,3 +122,4 @@ Repo root: `make cage-grok-*`.
 | `Dockerfile` | FROM `agent-cage-agent:latest` + install Grok CLI binary |
 | `docker-compose.override.yaml` | Image + `grok-home` volume + optional key |
 | `coding-agent-grok.yaml` | Proxy allowlist including `*.x.ai`, `*.grok.com` |
+| `presets/project.grok.config.toml` | Grok MCP → cage filesystem HTTP endpoint |

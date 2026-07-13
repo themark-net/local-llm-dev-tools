@@ -24,11 +24,10 @@
 
 ## Active (sorted P0 → P3)
 
-**Session (2026-07-12):** AgenC demoted ([ADR-0010](adr/0010-reject-agenc-as-primary-runtime.md)); host uninstall. **Next success path:** Grok Build launchable in agent-cage + filesystem MCP on workspace + Makefile version/smoke pipeline (T-0045).
+**Session (2026-07-12):** AgenC demoted (ADR-0010). **T-0045 green:** `make cage-grok-ready` (Grok in cage + workspace sync + filesystem MCP).
 
 | ID | Priority | Status | Item | Open questions | Depends | Notes |
 |----|----------|--------|------|----------------|---------|-------|
-| T-0045 | P1 | todo | **Grok Build in agent-cage:** launchable `cage-grok-*` path; presets so filesystem MCP operates on catalog/workspace repo; Makefile targets for smoke + versioned overlay/image | — | T-0022, OQ-0005 | ADR-0002 + ADR-0010 success definition; not AgenC |
 | T-0042 | P2 | todo | Catalog re-score pass using smokes + `make eval-v02` / matrix | — | T-0041 | Parked: fold empirical results into TOOLS.md / data/tools.json narrative |
 | T-0043 | P2 | todo | Write-guard **mcp-host wiring** (enable server; optional disable stock FS writes) | — | T-0031 | Parked: **not** the stock filesystem MCP — that already works. Only if audit/enforce policy in real agent MCP sessions is needed |
 | T-0015 | P2 | blocked | Optional Antigravity-Manager eval | [OQ-0007](open-questions/OQ-0007-antigravity-need.md) | — | |
@@ -66,6 +65,7 @@
 | T-0003 | P1 | done | Eval harness MVP (OQ-0002 option 5) | tier0 smokes + tier1 scored task; make eval-mvp; DSPy deferred |
 | T-0041 | P1 | done | Eval harness v0.2: multi-task suite + multi-model matrix | 002-fix-sum-evens; make eval-suite/matrix/v02; 3×2 matrix green |
 | T-0044 | P1 | done | AgenC install experiment + smoke (then demoted) | Trial only; **ADR-0010** rejects as primary; host uninstalled; catalog B/watch |
+| T-0045 | P1 | done | Grok Build in agent-cage + filesystem MCP on catalog workspace | `make cage-workspace-sync` / `cage-grok-ready`; project `.grok` → mcp-host filesystem |
 
 
 ## How to use

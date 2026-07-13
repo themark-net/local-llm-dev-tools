@@ -96,11 +96,12 @@ One-line purpose: **Track · Categorize · Rank · Integrate** tools for robust 
 
 ### Near-term (see TODO)
 
-**Near-term success path (T-0045 / ADR-0010):**
+**Operator jump-off (ADR-0002 + ADR-0010 + T-0045):**
 
-- **Grok Build CLI launchable inside agent-cage** with presets for **filesystem MCP** on the workspace/repo  
-- **Makefile** pipeline for smoke + versioned overlay/image changes  
-- Easy to use, easy to deploy, best-practice toolsets — **not** AgenC as jump-off ([ADR-0010](adr/0010-reject-agenc-as-primary-runtime.md))
+- **Grok Build in agent-cage:** `make cage-grok-up` then `make cage-grok-ready`  
+- Catalog tree at `/workspace/pfy-mentat` via `make cage-workspace-sync`  
+- **Filesystem MCP** (mcp-host) wired in project `.grok/config.toml`  
+- Not AgenC as primary ([ADR-0010](adr/0010-reject-agenc-as-primary-runtime.md))
 
 **Also parked:**
 

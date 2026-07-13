@@ -1,0 +1,7 @@
+# Project-scoped Grok MCP preset for agent-cage workspace.
+# Installed at /workspace/pfy-mentat/.grok/config.toml by make workspace-sync / grok-mcp-preset.
+# filesystem MCP is the cage mcp-host Streamable HTTP URL (see AGENTS.md discovery).
+
+[mcp_servers.filesystem]
+url = "http://172.30.0.10:8096/servers/filesystem/mcp"
+enabled = true

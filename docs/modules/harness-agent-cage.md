@@ -37,6 +37,8 @@ Package README: [harness/agent-cage/README.md](../../harness/agent-cage/README.m
 | `DEPLOY_PROFILE` | Profile for env-check / recipes |
 | `OLLAMA_HOST` / `OPENAI_BASE_URL` | Host vs cage URLs — see [REGISTRY](../../bootstrap/env/REGISTRY.md) |
 | Cage Grok auth | `make cage-grok-auth-import` → `~/.agentcage/grok-home/auth.json` |
+| Catalog in workspace | `make cage-workspace-sync` → `/workspace/pfy-mentat` |
+| Grok + filesystem MCP ready | `make cage-grok-ready` (T-0045) |
 
 ## Agent map
 

@@ -11,7 +11,8 @@ HARNESS := harness/agent-cage
 .PHONY: help cage-doctor cage-setup cage-init cage-up cage-up-mcp cage-down \
 	cage-shell cage-status cage-test cage-logs cage-smoke-host catalog-json \
 	env-init env-check cage-grok-install cage-grok-build cage-grok-up \
-	cage-grok-smoke cage-grok-uninstall cage-grok-auth-import \
+	cage-grok-smoke cage-grok-ready cage-grok-uninstall cage-grok-auth-import \
+	cage-workspace-sync cage-grok-mcp-preset \
 	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama \
 	smoke-codebase-memory smoke-repowise smoke-context-tools \
 	smoke-write-guard eval-tier0 eval-tier1 eval-mvp eval-suite eval-matrix eval-v02 \
@@ -38,7 +39,9 @@ help:
 	@echo ""
 	@echo "Grok-in-cage (versioned image overlay):"
 	@echo "  make cage-grok-install / cage-grok-auth-import / cage-grok-build"
-	@echo "  make cage-grok-up / cage-grok-smoke / cage-grok-uninstall"
+	@echo "  make cage-grok-up / cage-grok-smoke / cage-grok-ready   # T-0045 ready ladder"
+	@echo "  make cage-workspace-sync   # catalog → /workspace/pfy-mentat + filesystem MCP preset"
+	@echo "  make cage-grok-uninstall"
 	@echo "  Auth: import host ~/.grok/auth.json (browser/OIDC) or device-login in cage"
 	@echo ""
 	@echo "LiteLLM + Ollama (in-cage smoke, local-only):"
@@ -112,6 +115,15 @@ cage-grok-up:
 
 cage-grok-smoke:
 	@$(MAKE) -C $(HARNESS) grok-smoke
+
+cage-workspace-sync:
+	@$(MAKE) -C $(HARNESS) workspace-sync
+
+cage-grok-mcp-preset:
+	@$(MAKE) -C $(HARNESS) grok-mcp-preset
+
+cage-grok-ready:
+	@$(MAKE) -C $(HARNESS) grok-ready
 
 cage-grok-uninstall:
 	@$(MAKE) -C $(HARNESS) grok-overlay-uninstall

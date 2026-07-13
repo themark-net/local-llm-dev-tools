@@ -104,6 +104,24 @@ Assumptions:
 
 ---
 
+## G. Grok Build in agent-cage + filesystem MCP (T-0045)
+
+```text
+/one-shot Launchable Grok Build inside agent-cage with filesystem MCP on catalog repo.
+
+DoD:
+1. make cage-grok-up (or stack already on grok image + mcp-host)
+2. make cage-workspace-sync → /workspace/pfy-mentat has README + Makefile
+3. make cage-grok-ready exits 0 (grok --version, auth, MCP initialize, grok mcp list has filesystem)
+4. pipelines/smoke/cage-grok/results.latest.md updated
+
+Assumptions: host grok login for auth import; mcp-host up with filesystem server
+```
+
+**Green:** `make cage-grok-ready`
+
+---
+
 ## E. Eval MVP (OQ-0002 option 5)
 
 ```text

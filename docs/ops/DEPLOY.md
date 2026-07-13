@@ -89,7 +89,7 @@ Prefer these over ad-hoc host-only checks ([harness framework](harness-integrati
 | Full eval harness | **MVP + v0.2:** `make eval-mvp` / `eval-v02` / `eval-matrix`; DSPy later |
 | OpenCode / Claude validation | TODO T-0040 (P3) |
 | AgenC host runtime | **Demoted (ADR-0010)** — catalog reference only; prefer Grok CLI + `make cage-grok-*` |
-| Grok Build in cage | **T-0045:** `cage-grok-install` / `auth-import` / `build` / `up` / `smoke` + MCP filesystem on workspace |
+| Grok Build in cage | **T-0045 done:** `make cage-grok-up` + `make cage-grok-ready` (workspace sync + filesystem MCP) |
 
 ## Verify checklist
 

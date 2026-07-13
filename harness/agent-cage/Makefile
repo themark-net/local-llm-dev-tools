@@ -42,7 +42,7 @@ REPOWISE_PIP_SPEC ?= repowise==0.30.0
 .PHONY: help setup init update up up-mcp down shell status test logs dashboard \
 	smoke-host smoke-integration doctor ensure-cli ensure-project \
 	grok-overlay-install grok-overlay-uninstall grok-overlay-build grok-up grok-smoke \
-	grok-auth-import \
+	grok-auth-import workspace-sync grok-mcp-preset grok-ready \
 	local-ollama-overlay-install local-ollama-up smoke-litellm-ollama \
 	smoke-codebase-memory smoke-repowise smoke-context-tools \
 	smoke-write-guard write-guard-overlay-install \
@@ -70,7 +70,10 @@ help:
 	@echo "  make grok-auth-import       # copy host ~/.grok/auth.json (OIDC session) into cage"
 	@echo "  make grok-overlay-build     # build $(GROK_IMAGE)"
 	@echo "  make grok-up                # up --mcp with coding-agent-grok policy"
-	@echo "  make grok-smoke             # grok --version inside container"
+	@echo "  make workspace-sync         # sync catalog repo → /workspace/pfy-mentat"
+	@echo "  make grok-mcp-preset        # project .grok MCP → cage filesystem server"
+	@echo "  make grok-smoke             # grok --version + auth.json"
+	@echo "  make grok-ready             # T-0045: up path smoke (version+workspace+MCP)"
 	@echo "  make grok-overlay-uninstall # remove override from runtime project"
 	@echo "  Auth: browser/OIDC → auth.json (primary); XAI_API_KEY optional fallback"
 	@echo ""
@@ -310,6 +313,97 @@ grok-smoke: ensure-project
 	  -e GROK_HOME=/home/agent/.grok \
 	  -e PATH=/usr/local/bin:/home/agent/.local/bin:/usr/bin:/bin \
 	  agent-cage-agent bash -lc 'command -v grok; grok --version; test -r /home/agent/.grok/auth.json && echo auth.json:readable || echo auth.json:NOT_READABLE'
+
+# Sync catalog repo into cage workspace so filesystem MCP + Grok share one tree.
+# Destination: $(AGENTCAGE_DIR)/workspace/pfy-mentat → /workspace/pfy-mentat in agent.
+WORKSPACE_REPO_NAME ?= pfy-mentat
+WORKSPACE_REPO := $(AGENTCAGE_DIR)/workspace/$(WORKSPACE_REPO_NAME)
+
+workspace-sync: ensure-project
+	@test -d "$(CATALOG_ROOT)" || (echo "error: CATALOG_ROOT missing: $(CATALOG_ROOT)"; exit 1)
+	@mkdir -p "$(AGENTCAGE_DIR)/workspace"
+	@# Workspace is often owned by cage agent (uid 1001) or prior runs — ensure host can write.
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chmod a+rwx /workspace 2>/dev/null; mkdir -p /workspace/$(WORKSPACE_REPO_NAME); chown -R agent:agent /workspace/$(WORKSPACE_REPO_NAME) 2>/dev/null; chmod -R a+rwX /workspace/$(WORKSPACE_REPO_NAME) 2>/dev/null' \
+	  2>/dev/null || chmod -R a+rwX "$(AGENTCAGE_DIR)/workspace" 2>/dev/null || true
+	@echo "==> rsync catalog → $(WORKSPACE_REPO)"
+	@# Content-only rsync: bind mounts often reject owner/group/times (rsync 23).
+	@set +e; \
+	  rsync -r --delete \
+	    --exclude '.venv/' --exclude '**/.venv/' \
+	    --exclude 'node_modules/' --exclude '**/node_modules/' \
+	    --exclude '.agentcage/' --exclude '__pycache__/' --exclude '.grok/sessions/' \
+	    --exclude '.env' --exclude '.env.*' \
+	    "$(CATALOG_ROOT)/" "$(WORKSPACE_REPO)/"; \
+	  rc=$$?; \
+	  if [ $$rc -ne 0 ] && [ $$rc -ne 23 ] && [ $$rc -ne 24 ]; then \
+	    docker exec -u root agent-cage-agent bash -lc \
+	      'chmod -R a+rwX /workspace; mkdir -p /workspace/$(WORKSPACE_REPO_NAME)' 2>/dev/null; \
+	    rsync -r --delete \
+	      --exclude '.venv/' --exclude '**/.venv/' \
+	      --exclude 'node_modules/' --exclude '**/node_modules/' \
+	      --exclude '.agentcage/' --exclude '__pycache__/' --exclude '.grok/sessions/' \
+	      --exclude '.env' --exclude '.env.*' \
+	      "$(CATALOG_ROOT)/" "$(WORKSPACE_REPO)/"; \
+	    rc=$$?; \
+	  fi; \
+	  if [ $$rc -ne 0 ] && [ $$rc -ne 23 ] && [ $$rc -ne 24 ]; then exit $$rc; fi; \
+	  set -e
+	@$(MAKE) grok-mcp-preset
+	@docker exec -u root agent-cage-agent bash -lc \
+	  'chmod -R a+rX /workspace/$(WORKSPACE_REPO_NAME) 2>/dev/null; chown -R agent:agent /workspace/$(WORKSPACE_REPO_NAME) 2>/dev/null || true' \
+	  2>/dev/null || true
+	@echo "workspace-sync: OK ($(WORKSPACE_REPO))"
+	@test -f "$(WORKSPACE_REPO)/README.md" && test -f "$(WORKSPACE_REPO)/Makefile"
+
+# Project-scoped Grok MCP: cage mcp-host filesystem server (covers /workspace).
+grok-mcp-preset: ensure-project
+	@mkdir -p "$(WORKSPACE_REPO)/.grok"
+	@cp "$(GROK_OVERLAY)/presets/project.grok.config.toml" "$(WORKSPACE_REPO)/.grok/config.toml"
+	@echo "grok-mcp-preset: $(WORKSPACE_REPO)/.grok/config.toml → filesystem @ 172.30.0.10:8096"
+
+# T-0045 full readiness: Grok image up + repo in workspace + filesystem MCP healthy
+grok-ready: ensure-project
+	@docker inspect agent-cage-agent --format '{{.State.Status}}' 2>/dev/null | grep -q running \
+	  || (echo "error: agent not running — make grok-up first"; exit 1)
+	@$(MAKE) workspace-sync
+	@$(MAKE) grok-smoke
+	@echo "==> workspace has catalog repo"
+	@docker exec -u agent agent-cage-agent bash -lc \
+	  'test -f /workspace/$(WORKSPACE_REPO_NAME)/README.md && test -f /workspace/$(WORKSPACE_REPO_NAME)/Makefile && \
+	   test -f /workspace/$(WORKSPACE_REPO_NAME)/.grok/config.toml && \
+	   echo "workspace/$(WORKSPACE_REPO_NAME): OK"'
+	@echo "==> mcp-host filesystem MCP (Streamable HTTP)"
+	@docker exec -u agent agent-cage-agent bash -lc '\
+	  set -e; \
+	  out=$$(curl -sS -m 10 -X POST http://172.30.0.10:8096/servers/filesystem/mcp \
+	    -H "Content-Type: application/json" \
+	    -H "Accept: application/json, text/event-stream" \
+	    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{},\"clientInfo\":{\"name\":\"grok-ready\",\"version\":\"0\"}}}"); \
+	  echo "$$out" | grep -q secure-filesystem-server; \
+	  echo "filesystem MCP initialize: OK"'
+	@echo "==> filesystem MCP can see catalog tree under /workspace"
+	@docker exec -u agent agent-cage-agent bash -lc '\
+	  set -e; \
+	  test -d /workspace/$(WORKSPACE_REPO_NAME)/harness/agent-cage; \
+	  test -d /workspace/$(WORKSPACE_REPO_NAME)/bootstrap/grok-cli; \
+	  ls /workspace/$(WORKSPACE_REPO_NAME) | head -8; \
+	  echo "catalog paths: OK"'
+	@echo "==> grok mcp list (project config in synced repo)"
+	@docker exec -u agent \
+	  -e HOME=/home/agent \
+	  -e GROK_HOME=/home/agent/.grok \
+	  -e PATH=/usr/local/bin:/home/agent/.local/bin:/usr/bin:/bin \
+	  -w /workspace/$(WORKSPACE_REPO_NAME) \
+	  agent-cage-agent bash -lc '\
+	    set -e; \
+	    grok mcp list 2>&1 | tee /tmp/grok-mcp-list.txt; \
+	    grep -qi filesystem /tmp/grok-mcp-list.txt; \
+	    echo "grok mcp list: filesystem present"'
+	@mkdir -p "$(CATALOG_ROOT)/pipelines/smoke/cage-grok"
+	@printf '| %s | cage-grok-ready | PASS | workspace+MCP+grok |\n' "$$(date -Iseconds)" \
+	  >> "$(CATALOG_ROOT)/pipelines/smoke/cage-grok/results.latest.md"
+	@echo "grok-ready: PASS (T-0045)"
 
 # --- Local Ollama (host) + LiteLLM in-cage smoke -----------------------------
 
