@@ -1,13 +1,13 @@
-### Entry 038: MLX Studio — Local LLM & Image Model Runner for macOS (Apple Silicon)
+### Entry 039: CLAUDE.md — 192k-Star Behavioral Guidelines File for Claude Code (Karpathy-Inspired)
 
-- **URL**: https://x.com/i/status/2076950094620799371
+- **URL**: https://x.com/i/status/2077032502993256646
 - **Date**: 2026-07-14
-- **Poster**: Tom Dörr (@tom_doerr)
-- **Summary / Key Claims**: MLX Studio is a tool for running large language and image models locally on macOS using Apple's MLX framework. Optimized for Apple Silicon, providing an easy way to run powerful local models without cloud dependencies.
-- **Extracted Repos / Tools**: Primary: https://github.com/jjang-ai/mlxstudio — Local model runner for macOS using MLX.
-- **TOOLS.md Link**: New row under Inference & Serving (local macOS inference tool).
-- **Notes**: **Good relevance for local macOS users.** Provides a convenient GUI/tooling layer on top of Apple's MLX framework for running LLMs and image models locally. Fits the local/self-hosted inference category, especially for users on Apple hardware. While not as general-purpose as some cross-platform options, it's a strong native macOS solution. High fit for evaluation criteria: High Relevance (local macOS inference), High Integration Ease (easy to use on Apple Silicon), High Reproducibility (open source), Low Redundancy. Recommend: (1) Catalog as local macOS inference tool. (2) Useful addition for users on Apple hardware looking for optimized local model running.
-- **Status**: Processed and cataloged (added as local macOS inference tool; useful for Apple Silicon users)
+- **Poster**: Akshay Pachaar (@akshay_pachaar)
+- **Summary / Key Claims**: A single CLAUDE.md file (derived from Andrej Karpathy's coding rules) has reached 192k GitHub stars. It provides structured behavioral guidelines for Claude Code to prevent common LLM coding mistakes: over-engineering, ignoring existing patterns, and adding unnecessary dependencies. You simply drop one .md file into your repo, and it shapes the AI's behavior across the entire project. Emphasizes moving from "use AI to write code" to "engineer the AI's behavior so the code is actually good." 100% open-source, prompt-engineering focused, no complex tooling required.
+- **Extracted Repos / Tools**: Primary repo for the CLAUDE.md template (linked in post). Strong conceptual overlap with AGENTS.md, project context files, and structured instruction patterns.
+- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Context & Prompt Engineering (high-signal behavioral guidelines pattern).
+- **Notes**: **Very high relevance.** This is an excellent real-world validation of the power of well-crafted markdown instruction files for guiding agent behavior (directly analogous to our AGENTS.md, project-process files, and skills). The Karpathy-inspired approach to preventing predictable LLM mistakes through explicit guidelines is highly aligned with our focus on reliable agent workflows and context engineering. Strong overlap with second brain patterns and structured prompting. High fit for evaluation criteria: Very High Relevance (behavioral guidelines / context files for agents), High Integration Ease (simple .md file), High Reproducibility (open source, widely adopted), Low Redundancy. Recommend: (1) Catalog as major context/instruction file pattern. (2) Strong candidate for studying and adapting into our own AGENTS.md and project scaffolding. (3) Excellent reference for improving agent output quality through better system-level instructions.
+- **Status**: Processed and cataloged (added as high-value behavioral guidelines / context file resource; priority for context and agent scaffolding category)
 
 ## Future Entries Format
 
