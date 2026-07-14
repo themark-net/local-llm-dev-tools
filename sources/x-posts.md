@@ -1,13 +1,13 @@
-### Entry 043: clawe — Open-Source Trello Alternative for OpenClaw Agents
+### Entry 044: Memvid — MP4-Based Agent Memory System (Git-like Versioning, Rewind, Replay, Branch)
 
-- **URL**: https://x.com/i/status/2077068280007663912
+- **URL**: https://x.com/i/status/2077064295209443504
 - **Date**: 2026-07-14
-- **Poster**: Tom Dörr (@tom_doerr)
-- **Summary / Key Claims**: clawe is an open-source Trello-style project management tool built specifically for OpenClaw agents. Provides a structured board/task interface tailored for AI agent workflows and collaboration.
-- **Extracted Repos / Tools**: Primary: https://github.com/getclawe/clawe — Open-source Trello alternative for agents.
-- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Agent Task Management & Boards (high-signal agent-specific PM tool).
-- **Notes**: **Good relevance for agent orchestration.** Provides a visual task/board interface optimized for AI agents (OpenClaw). This complements tools like Multica (issue assignment and team boards for agents) and helps structure agent work in a human-friendly way. Useful for agent team management, task tracking, and making autonomous workflows more observable and manageable. High fit for evaluation criteria: High Relevance (agent-specific task management), High Integration Ease (open source, agent-focused), High Reproducibility (open source), Low Redundancy. Recommend: (1) Catalog as agent task/board management tool. (2) Useful addition for structuring and visualizing agent work, especially in multi-agent or long-running loop setups. (3) Synergistic with Multica and other agent team/orchestration tools.
-- **Status**: Processed and cataloged (added as agent-specific task management tool; useful for agent workflows)
+- **Poster**: How To Prompt (@HowToPrompt__)
+- **Summary / Key Claims**: Memvid packages an agent's entire memory, data, embeddings, search index, and metadata into simple MP4 files. No database, no server, no sidecar files required. Claims significant performance gains over traditional RAG/vector DBs (+35% long-term memory, +76% multi-hop reasoning, 1,372× faster, 0.025ms latency). Key innovation: memory is append-only and versioned like git — rewind, replay, or branch any past state for debugging and time-travel analysis. Fully offline, model-agnostic, with SDKs for Python, Node, Rust, and CLI. 15.7k stars, 100% open source.
+- **Extracted Repos / Tools**: Primary: https://github.com/memvid/memvid — MP4-based agent memory system with git-like versioning.
+- **TOOLS.md Link**: New row under Context & Memory / RAG & Long-Term Memory (high-signal novel memory backend).
+- **Notes**: **Very high relevance for context and memory management.** This is a groundbreaking approach to agent memory that directly addresses long-term context, debugging past states, and avoiding the complexity of traditional vector databases. The git-like rewind/replay/branch capability is extremely powerful for reliable agent workflows and aligns perfectly with our focus on context optimization, self-healing, and robust long-running loops. Strong potential for local agent setups. High fit for evaluation criteria: Very High Relevance (novel memory backend with versioning), High Integration Ease (SDKs + CLI), High Reproducibility (open source with strong claims), Low Redundancy. Recommend: (1) Catalog as major innovative memory tool. (2) Strong candidate for deep evaluation and potential integration into our agent stack (especially for long-term memory and debugging in loop engineering). (3) Excellent for exploring alternatives to traditional RAG/vector stores in local environments.
+- **Status**: Processed and cataloged (added as high-value novel agent memory system; priority for context/memory category)
 
 ## Future Entries Format
 
