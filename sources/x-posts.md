@@ -1,24 +1,13 @@
-### Entry 030: Advanced Claude Workflows & Skills Compilation (Loops, Second Brain, MCP, Skills Building)
+### Entry 031: Iterative Feedback Loop for LLMs (Generate → Test → Update Context → Repeat)
 
-- **URL**: https://x.com/i/status/2076629724315697287
+- **URL**: https://x.com/i/status/2076657357078016229
 - **Date**: 2026-07-13
-- **Poster**: Hamza Khalid (@humzaakhalid)
-- **Summary / Key Claims**: Comprehensive collection of advanced Claude usage resources covering:
-  - Building and using Claude Skills
-  - How to Build Loops + 7 Advanced Claude Loops
-  - Claude + Obsidian for Second Brain / personal knowledge management
-  - Claude + Higgsfield MCP integration
-  - Using Fable 5 effectively
-  - Claude in Excel, Artifacts, Chrome, Connectors
-  - Fixing broken Claude code
-  - Design patterns from Anthropic engineers
-  - Advanced workflows (financial analysis, learning anything, faceless YouTube, etc.)
-  - Avoiding Claude's limits and common skills mistakes
-  Strong emphasis on practical, production-grade agentic workflows and skill development.
-- **Extracted Repos / Tools**: No single new repo; collection of high-quality guides and patterns. Strong focus on skills, loops, Obsidian integration, and MCP usage.
-- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Skills & Prompt Engineering and Autonomous Loops & Agentic Workflows (high-signal workflow compilation).
-- **Notes**: **High relevance.** This is an excellent curated set of advanced Claude workflows that directly overlaps with our loop engineering (Entries 018/021/024/027), skills development, second brain patterns (Entry 014/020), and MCP integration work. The emphasis on building reusable skills, structured loops, and Obsidian + MCP for knowledge compounding is highly aligned with the repo's goals. Strong candidate for reproduction and adaptation. High fit for evaluation criteria: Very High Relevance (skills + loops + second brain + MCP), High Integration Ease (patterns are portable), High Reproducibility (detailed guides), Low Redundancy. Recommend: (1) Catalog as major workflow/skills resource. (2) Strong candidate for extracting and adapting patterns into our loop-engineering skill pack and AgenC augmentation layer (especially loop building, skills mistakes to avoid, and Obsidian/MCP second brain setups). (3) Excellent reference material for enhancing AGENTS.md and project-process documentation.
-- **Status**: Processed and cataloged (added as high-value advanced workflows and skills compilation; priority for skills/loop integration)
+- **Poster**: Lunar (@LunarResearcher)
+- **Summary / Key Claims**: Highlights a paper that transforms LLMs from one-shot oracles into iterative feedback machines using the loop: **generate → test → update context → repeat**. The key idea is that each answer carries forward evidence from previous iterations, rather than just "trying again." This architecture helps agents stop hallucinating forward by building cumulative, evidence-based context. The poster calls it "dangerously powerful" and suggests it could become the default architecture for reliable agent loops.
+- **Extracted Repos / Tools**: Paper referenced (not directly linked in post; focuses on the iterative feedback loop pattern). Strong conceptual alignment with self-healing, goal-based evaluation, and context management in agent systems.
+- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Autonomous Loops & Agentic Workflows (high-signal feedback loop pattern).
+- **Notes**: **High relevance.** This directly reinforces and extends our loop engineering work (especially goal-based evaluators, self-healing patterns, and context accumulation from Entries 018/021/024/027/030). The generate-test-update context loop is a clean, powerful formulation of iterative verification and evidence-carrying that reduces hallucinations in autonomous runs. Strong overlap with adversarial verification (fable-method style) and our emphasis on system quality over ad-hoc prompting. High fit for evaluation criteria: Very High Relevance (iterative feedback + context accumulation), High Integration Ease (pattern is portable to skills/evaluators), High Reproducibility (clear loop structure), Low Redundancy. Excellent for the repo's reproduction goals. Recommend: (1) Catalog as major feedback/iterative loop resource. (2) Strong candidate for direct integration into our loop-engineering skill pack (e.g., as a core evaluator or self-healing context pattern). (3) Use as reference when refining goal-based and proactive loop implementations for AgenC.
+- **Status**: Processed and cataloged (added as high-value iterative feedback loop pattern; priority for skills integration)
 
 ## Future Entries Format
 
