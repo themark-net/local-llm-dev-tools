@@ -1,13 +1,18 @@
-### Entry 034: Understand-Anything — Interactive Codebase Knowledge Graph for Onboarding & Agent Context
+### Entry 035: Penpot — Open-Source Figma Alternative with MCP Server for AI Agents
 
-- **URL**: https://x.com/i/status/2076562526507315534
+- **URL**: https://x.com/i/status/2076629090778726866
 - **Date**: 2026-07-13
-- **Poster**: Zane Chen (@chenzeling4)
-- **Summary / Key Claims**: Understand-Anything turns any codebase (even 200K+ lines you didn't write) into an interactive knowledge graph. Features: search, click through dependencies, ask questions in plain English. Designed to make onboarding dramatically faster. Works with Claude Code, Codex, Cursor, Copilot, Gemini CLI. Described as "what onboarding should feel like."
-- **Extracted Repos / Tools**: Primary: Understand-Anything (repo linked in post, ~73.7K stars claimed). Codebase-to-knowledge-graph tool with natural language querying and dependency visualization. Strong agent integration (works with major coding agents).
-- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Codebase Knowledge Graph & Memory (high-signal graph tool for agents).
-- **Notes**: **High relevance — strong complement to Graphify (Entry 017).** Both tools turn codebases into queryable knowledge graphs for agents. Understand-Anything emphasizes interactive exploration and plain-English questions, making it particularly strong for onboarding and rapid context building when joining new codebases. Excellent fit for agent context optimization and reducing the "staring at 200K lines" problem. High fit for evaluation criteria: Very High Relevance (codebase knowledge graph + agent integration), High Integration Ease (works with Claude Code/Cursor/etc.), High Reproducibility (open source with claimed high stars), Low-to-Medium Redundancy (complements Graphify with different interaction model). Recommend: (1) Catalog as major codebase graph tool. (2) Strong candidate for comparison/evaluation against Graphify and codebase-memory-mcp. (3) Useful for agent onboarding workflows and context layer in loop engineering.
-- **Status**: Processed and cataloged (added as high-value codebase knowledge graph tool; priority for context/graph category)
+- **Poster**: Simplifying AI (@simplifyinAI)
+- **Summary / Key Claims**: Penpot is a free, open-source design tool that mirrors Figma's layout and workflow. Key features for agents:
+  - MCP server that lets AI agents edit designs directly
+  - Free Dev Mode with instant CSS, SVG, and HTML export
+  - Native design tokens for keeping design and code in sync
+  - Real-time collaboration built in
+  100% free and self-hostable. Strong positioning as the open-source Figma alternative with native AI/agent integration via MCP.
+- **Extracted Repos / Tools**: Primary: https://github.com/penpot/penpot (open source Figma alternative with MCP server for AI agents).
+- **TOOLS.md Link**: New row under MCP Servers & Tooling or Design & Dev Tools (high-signal MCP-enabled design tool).
+- **Notes**: **Good relevance for MCP ecosystem.** The standout feature is the MCP server that allows AI agents to directly edit designs. This aligns well with our heavy focus on MCP integration (AgenC, skills, agent tooling). While not a core agent framework, the MCP capability makes it a useful addition for design-to-code workflows and agent-driven design tasks. High fit for evaluation criteria: High Relevance (MCP server for design editing), High Integration Ease (MCP-native), High Reproducibility (open source, self-hostable), Low Redundancy. Recommend: (1) Catalog as MCP-enabled design tool. (2) Useful for anyone building agent workflows that involve design or UI generation. (3) Synergistic with MCP-focused parts of the catalog.
+- **Status**: Processed and cataloged (added as MCP-enabled design tool; useful for MCP ecosystem)
 
 ## Future Entries Format
 
