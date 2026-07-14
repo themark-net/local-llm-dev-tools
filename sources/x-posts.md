@@ -1,13 +1,13 @@
-### Entry 040: BrowserOS — Open-Source Agentic Chromium Browser for Local AI Agents
+### Entry 041: destructive_command_guard — Safety Guard for Coding Agents Against Destructive Commands
 
-- **URL**: https://x.com/i/status/2077011759114973616
+- **URL**: https://x.com/i/status/2076855961189507099
 - **Date**: 2026-07-14
-- **Poster**: Brian Roemmele (@BrianRoemmele)
-- **Summary / Key Claims**: BrowserOS is an open-source, privacy-first, agentic Chromium browser that brings powerful local AI automation to everyday users. It allows running AI agents directly in the browser on your own machine. Highlights "agents running agents" setups (e.g., at The Zero-Human Company). Designed to democratize serious agentic capabilities beyond big-tech labs or expensive enterprise tools.
-- **Extracted Repos / Tools**: BrowserOS (open-source agentic browser project). Strong focus on local, privacy-first agent execution in a browser environment.
-- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Browser & Local Agent Tools (high-signal local agentic browser).
-- **Notes**: **High relevance for local agent tooling.** BrowserOS represents a significant step toward making powerful local AI agents accessible and integrated into everyday browsing workflows. The "agents running agents" concept and privacy-first local execution align well with our focus on autonomous loops, local tooling, and reducing dependency on cloud services. Useful for exploring browser-native agent interfaces and always-on local automation. High fit for evaluation criteria: Very High Relevance (local agentic browser + agents running agents), High Integration Ease (Chromium-based, local), High Reproducibility (open source), Low Redundancy. Recommend: (1) Catalog as major local agentic browser tool. (2) Strong candidate for experimentation with browser-based agent interfaces and multi-agent local setups. (3) Synergistic with local hardware/agent harness work.
-- **Status**: Processed and cataloged (added as high-value local agentic browser resource; priority for local tooling category)
+- **Poster**: Shubham Saboo (@Saboo_Shubham_)
+- **Summary / Key Claims**: Free, open-source tool that works with all coding agents to prevent destructive commands (e.g., accidental file deletion like the GPT-5.6-Sol incident). Acts as a safety guardrail for agentic coding workflows.
+- **Extracted Repos / Tools**: Primary: https://github.com/Dicklesworthstone/destructive_command_guard — Safety layer for coding agents.
+- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Safety & Guardrails (high-signal safety tool for agents).
+- **Notes**: **High relevance for agent safety.** Directly addresses a critical pain point in agentic coding: preventing catastrophic mistakes from powerful but unguardrailed agents. Fits perfectly with our focus on reliable, hardened agent workflows (e.g., agent-cage isolation, verification/eval loops, adversarial checking). Strong complement to safety-focused patterns in loop engineering and harness engineering. High fit for evaluation criteria: Very High Relevance (agent safety guardrails), High Integration Ease (works with all coding agents), High Reproducibility (open source), Low Redundancy. Recommend: (1) Catalog as major agent safety tool. (2) Strong candidate for integration/testing with our harness and loop engineering setups. (3) Excellent reference for building or evaluating safety layers in autonomous agent systems.
+- **Status**: Processed and cataloged (added as high-value agent safety guardrail tool; priority for safety category)
 
 ## Future Entries Format
 
