@@ -1,13 +1,13 @@
-### Entry 045: Bonsai 27B — Extreme 1-Bit Quantization for Browser-Based Local Inference
+### Entry 047: Spec Kit (Revisited) — Structured Spec-First Workflow for Reliable Agent Coding (120k+ Stars)
 
-- **URL**: https://x.com/i/status/2077087411079700782
-- **Date**: 2026-07-14
-- **Poster**: Xenova (@xenovacom)
-- **Summary / Key Claims**: Bonsai 27B uses 1-bit quantization to shrink a 54GB model down to just 3.8GB (-93% size) while retaining ~90% of its intelligence. Runs locally in the browser via custom WebGPU kernels (developed with Fable 5 and GPT-5.6 Sol). Represents a major leap in making large models practical for local/browser-based inference.
-- **Extracted Repos / Tools**: Model collection on Hugging Face (PrismML Bonsai 27B). Custom WebGPU kernels for browser inference. Strong demonstration of extreme quantization + browser execution.
-- **TOOLS.md Link**: New row under Inference & Serving / Extreme Quantization & Browser Inference (high-signal extreme quantization example).
-- **Notes**: **High relevance for local/browser inference.** This showcases cutting-edge extreme quantization (1-bit) that makes large models feasible for local and even browser-based deployment. The combination of massive size reduction with strong performance retention is directly useful for practical local LLM setups, especially on resource-constrained devices or in-browser scenarios. High fit for evaluation criteria: Very High Relevance (extreme quantization + browser inference), High Integration Ease (WebGPU/browser-focused), High Reproducibility (HF model + kernels), Low Redundancy. Recommend: (1) Catalog as major extreme quantization / browser inference resource. (2) Strong candidate for testing on local hardware and browser environments. (3) Excellent reference for pushing the boundaries of what can run locally.
-- **Status**: Processed and cataloged (added as high-value extreme quantization and browser inference resource; priority for inference category)
+- **URL**: https://x.com/i/status/2076754607049449633
+- **Date**: 2026-07-13
+- **Poster**: Atlas (@crptAtlas)
+- **Summary / Key Claims**: GitHub's Spec Kit forces AI agents to create a full structured spec *before* writing any code. Commands: /constitution (rules/standards), /specify (what to build), /clarify (open questions), /plan (architecture/stack), /tasks (ordered work), /implement (execution). Prevents "vibe coding" disasters. Already 120k+ stars, 10k+ forks. Works with Claude Code, Cursor, Copilot, Codex, Gemini CLI + 25+ agents. Emphasizes that learning to drive agents with structured specs is what separates effective AI engineers from prompt fighters.
+- **Extracted Repos / Tools**: Primary: https://github.com/github/spec-kit (already cataloged in Entry 013). This post highlights its massive adoption and the exact command workflow.
+- **TOOLS.md Link**: Reinforces existing entry under Agent Frameworks & Orchestration / Structured Workflow & Prompt Engineering.
+- **Notes**: **High relevance — strong reinforcement of Entry 013.** This post provides fresh details on the exact command flow (/constitution → /specify → /clarify → /plan → /tasks → /implement) and highlights its explosive adoption (120k+ stars). It directly supports our emphasis on structured planning guardrails before implementation. Excellent for reproduction of best practices in agentic coding. The spec-first approach is a core pattern we should continue to prioritize in our own scaffolding and loop engineering. High fit for evaluation criteria: Very High Relevance (spec-first structured workflow), High Integration Ease (works with many agents), High Reproducibility (GitHub-backed, open source), Low Redundancy. Recommend: (1) Update existing Spec Kit entry with command workflow details from this post. (2) Strong reference for enhancing AGENTS.md or project-process with similar spec-first patterns. (3) Excellent example of how structured workflows dramatically improve agent output quality and predictability.
+- **Status**: Processed and cataloged (reinforces Spec Kit entry with command details and adoption metrics; high value for structured workflow patterns)
 
 ## Future Entries Format
 
