@@ -1,13 +1,17 @@
-### Entry 047: Spec Kit (Revisited) — Structured Spec-First Workflow for Reliable Agent Coding (120k+ Stars)
+### Entry 048: HERMES AGENT — Three Feedback Loops for Continuous Self-Improvement (Auto-Memory, Auto-Skill, Curator)
 
-- **URL**: https://x.com/i/status/2076754607049449633
-- **Date**: 2026-07-13
-- **Poster**: Atlas (@crptAtlas)
-- **Summary / Key Claims**: GitHub's Spec Kit forces AI agents to create a full structured spec *before* writing any code. Commands: /constitution (rules/standards), /specify (what to build), /clarify (open questions), /plan (architecture/stack), /tasks (ordered work), /implement (execution). Prevents "vibe coding" disasters. Already 120k+ stars, 10k+ forks. Works with Claude Code, Cursor, Copilot, Codex, Gemini CLI + 25+ agents. Emphasizes that learning to drive agents with structured specs is what separates effective AI engineers from prompt fighters.
-- **Extracted Repos / Tools**: Primary: https://github.com/github/spec-kit (already cataloged in Entry 013). This post highlights its massive adoption and the exact command workflow.
-- **TOOLS.md Link**: Reinforces existing entry under Agent Frameworks & Orchestration / Structured Workflow & Prompt Engineering.
-- **Notes**: **High relevance — strong reinforcement of Entry 013.** This post provides fresh details on the exact command flow (/constitution → /specify → /clarify → /plan → /tasks → /implement) and highlights its explosive adoption (120k+ stars). It directly supports our emphasis on structured planning guardrails before implementation. Excellent for reproduction of best practices in agentic coding. The spec-first approach is a core pattern we should continue to prioritize in our own scaffolding and loop engineering. High fit for evaluation criteria: Very High Relevance (spec-first structured workflow), High Integration Ease (works with many agents), High Reproducibility (GitHub-backed, open source), Low Redundancy. Recommend: (1) Update existing Spec Kit entry with command workflow details from this post. (2) Strong reference for enhancing AGENTS.md or project-process with similar spec-first patterns. (3) Excellent example of how structured workflows dramatically improve agent output quality and predictability.
-- **Status**: Processed and cataloged (reinforces Spec Kit entry with command details and adoption metrics; high value for structured workflow patterns)
+- **URL**: https://x.com/i/status/2077132507343134788
+- **Date**: 2026-07-14
+- **Poster**: YanXbt (@IBuzovskyi)
+- **Summary / Key Claims**: Hermes Agent has three built-in feedback loops that make it smarter every week if enabled:
+  1. **AUTO-MEMORY**: After every response, saves learnings (timezone, stack, preferences, tools, mistakes, projects) to memory.md and user.md. Loaded automatically in future context.
+  2. **AUTO-SKILL CREATION**: After complex tasks (5+ tool calls), creates reusable SKILL.md files for procedures, tools used, and pitfalls. Next similar task uses the saved skill instead of re-deriving.
+  3. **CURATOR**: Background maintenance (every 7 days) that tracks skill usage and archives unused agent-created skills after 90 days (recoverable). Supports pinning critical skills and optional LLM-based consolidation of duplicates.
+  The post emphasizes that most users disable these (to save tokens) or ignore them, causing the agent to stop improving. With all three running, the agent compounds knowledge: facts are remembered, procedures are reused, and bloat is pruned.
+- **Extracted Repos / Tools**: Hermes Agent (framework with built-in auto-memory, auto-skill, and curator loops). Strong emphasis on self-improving agent architecture via feedback loops and skill/memory management.
+- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Self-Improving Agents & Feedback Loops (high-signal self-improvement pattern).
+- **Notes**: **Extremely high relevance — direct reinforcement of loop engineering.** The three feedback loops (auto-memory, auto-skill creation, curator pruning) are a concrete, production-grade implementation of the self-improving / compounding agent patterns we've been building toward. Maps beautifully to our 4-tier autonomy, 14-step roadmap, goal-based evaluators, and skills work. The curator's git-like pruning + pinning is especially elegant for long-term maintainability. High fit for evaluation criteria: Very High Relevance (self-improving feedback loops + skill/memory management), High Integration Ease (patterns are portable), High Reproducibility (detailed implementation described), Low Redundancy. Recommend: (1) Catalog as major self-improving agent framework. (2) Strong candidate for direct adaptation into our loop-engineering skill pack (e.g., auto-memory patterns, auto-skill creation, curator-style maintenance). (3) Excellent reference for building compounding intelligence into AgenC-based agents.
+- **Status**: Processed and cataloged (added as high-value self-improving agent framework; priority for loop engineering and skills integration)
 
 ## Future Entries Format
 
