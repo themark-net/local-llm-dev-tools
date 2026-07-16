@@ -1,13 +1,13 @@
-### Entry 054: OpenClaude-Portable — Folder-Based Portable Coding Agent (Multi-Provider, No Install)
+### Entry 055: Hermes Agent Credential Pools — Scoped, Revocable API Key Management for Sub-Agents
 
-- **URL**: https://x.com/i/status/2077768643128009110
+- **URL**: https://x.com/i/status/2077583294137291175
 - **Date**: 2026-07-16
-- **Poster**: Tom Dörr (@tom_doerr)
-- **Summary / Key Claims**: OpenClaude-Portable is a fully portable coding agent that runs directly from a folder with no installation required on Windows, Linux, or macOS. It aggregates Anthropic (Claude), OpenAI, Google Gemini, and Ollama into a unified web dashboard with agent capabilities. Designed for easy use on temporary or shared machines.
-- **Extracted Repos / Tools**: Primary: https://github.com/techjarves/OpenClaude-Portable — Portable, folder-based multi-provider coding agent.
-- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Portable & Lightweight Agents (strong fit for new lightweight harness direction).
-- **Notes**: **Very high relevance to current pivot.** This directly supports the shift to a lightweight, scriptable, local-first harness (OpenCode + Grok build CLI). The "run from folder, no install" model is ideal for portable, reproducible environments. Strong candidate to evaluate as a core runtime or reference implementation for the harness. Complements our focus on OpenCode and custom agent CLIs. High fit for evaluation criteria: Very High Relevance (portable lightweight agent), High Integration Ease (folder-based, multi-provider), High Reproducibility (open source), Low Redundancy. Recommend: (1) Catalog as top portable agent option. (2) Strong candidate for direct testing/integration into `bootstrap/setup-lightweight-harness.py`. (3) Evaluate as potential primary runtime or unified dashboard layer alongside OpenCode and Grok CLI.
-- **Status**: Processed and cataloged (added as high-value portable lightweight agent; priority for harness integration)
+- **Poster**: Hermes Agent Tips (@HermesAgentTips)
+- **Summary / Key Claims**: Hermes Agent's credential pools give each sub-agent a scoped, revocable key instead of exposing your real API key. This limits blast radius — one leaked session only compromises one account. "iron-proxy" handles rotation automatically so you never touch raw secrets. Strong security best practice for multi-agent systems.
+- **Extracted Repos / Tools**: Related to Hermes Agent (NousResearch/hermes-agent). PR: https://github.com/NousResearch/hermes-agent/pull/30179. Focus on credential management and secret rotation for agent security.
+- **TOOLS.md Link**: New row under Safety & Guardrails or Agent Frameworks & Orchestration (security pattern for multi-agent systems).
+- **Notes**: **High relevance for safety and Hermes integration.** Directly enhances our Hermes Agent work (Entry 048) and the lightweight harness. The scoped/revocable credential pools + automatic rotation is an excellent security pattern for systems with multiple sub-agents or long-running loops. Complements destructive_command_guard and other guardrails. High fit for evaluation criteria: High Relevance (agent security best practices), High Integration Ease (can be adopted as a pattern), High Reproducibility (open source in Hermes ecosystem), Low Redundancy. Recommend: (1) Catalog as key security pattern. (2) Consider integrating credential pool concepts into safety_guards module of the lightweight harness. (3) Strong addition for any multi-agent or sub-agent workflows.
+- **Status**: Processed and cataloged (added as high-value agent security pattern; useful for harness safety layer)
 
 ## Future Entries Format
 
