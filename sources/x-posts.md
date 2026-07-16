@@ -1,13 +1,13 @@
-### Entry 050: paperclipai/companies — 16 Pre-Built AI Companies with Org Charts & Hundreds of Skills
+### Entry 051: N-gram Speculative Decoding (ngram-mod) in llama.cpp — Zero-VRAM Speed Boost for Repetitive Generation
 
-- **URL**: https://x.com/i/status/2077741674080395626
+- **URL**: https://x.com/i/status/2077718647905333549
 - **Date**: 2026-07-16
-- **Poster**: Tom Dörr (@tom_doerr)
-- **Summary / Key Claims**: Imports 16 pre-built AI companies with complete org charts and hundreds of skills into the Paperclip platform. Provides ready-made company templates (org structure + skill libraries) for quickly setting up multi-role agent systems.
-- **Extracted Repos / Tools**: Primary: https://github.com/paperclipai/companies — Pre-built AI company templates with org charts and skills for Paperclip.
-- **TOOLS.md Link**: New row under Agent Frameworks & Orchestration / Skills & Prompt Engineering (high-signal pre-built company/skill templates).
-- **Notes**: **High relevance — direct extension of org-chart skill patterns.** Builds directly on our earlier entries about Claude Company Org Chart (Entry 016/037) and large-scale curated skill stacks. Provides concrete, ready-to-import company templates with full org structures and hundreds of skills. Excellent for rapid setup of multi-role agent teams and studying real-world org/skill curation patterns. High fit for evaluation criteria: Very High Relevance (pre-built company orgs + skill libraries), High Integration Ease (importable templates), High Reproducibility (open source), Low Redundancy. Recommend: (1) Catalog as major pre-built company/skill template resource. (2) Strong candidate for studying and adapting org-chart structures into our own skill packs. (3) Useful for quickly bootstrapping complex multi-agent setups.
-- **Status**: Processed and cataloged (added as high-value pre-built AI company templates; priority for skills/org category)
+- **Poster**: Alok (@analogalok)
+- **Summary / Key Claims**: Detailed technical breakdown of N-gram Speculative Decoding (`--spec-type ngram-mod`) in llama.cpp. Provides massive speedups on repetitive tasks (code, JSON, document editing) by using a lightweight rolling hash + O(1) lookup to detect and "fast forward" through sequences already present in the KV cache/context. Achieves ~2x+ generation speed (e.g., 46 t/s → 107 t/s on code editing) with **zero extra VRAM** and virtually zero compute overhead. No draft model required. Especially powerful for structured/repetitive output. Includes parameters (`--spec-ngram-simple-size-n`, `--spec-ngram-simple-size-m`) and a free Google Colab notebook for testing.
+- **Extracted Repos / Tools**: llama.cpp with ngram-mod support. Strong practical optimization for local inference engines.
+- **TOOLS.md Link**: New row under Inference & Serving / Speculative Decoding & Optimization (high-signal inference optimization technique).
+- **Notes**: **High relevance for local inference performance.** This is an excellent, practical optimization that delivers significant speed gains on exactly the kinds of tasks agents do most (code generation, structured output, editing) without any VRAM penalty. The rolling hash + speculative draft approach is pure computer science elegance. Directly useful for making local agent workflows faster and more responsive. High fit for evaluation criteria: Very High Relevance (zero-cost speculative decoding), High Integration Ease (simple llama.cpp flag), High Reproducibility (detailed explanation + Colab notebook), Low Redundancy. Recommend: (1) Catalog as major inference optimization technique. (2) Strong candidate for testing on local hardware (especially code-heavy agent tasks). (3) Excellent reference for squeezing maximum performance out of local LLM setups.
+- **Status**: Processed and cataloged (added as high-value inference optimization; priority for performance category)
 
 ## Future Entries Format
 
