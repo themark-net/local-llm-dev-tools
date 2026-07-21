@@ -129,7 +129,8 @@
     {
       "name": "gstack",
       "primary_category": "Agent Frameworks & Orchestration",
-      "github":{"s1": 85, "s2": 85, "s3": 90, "s4": 95, "overall": 88},
+      "github": "https://github.com/garrytan/gstack",
+      "scores": {"s1": 85, "s2": 85, "s3": 90, "s4": 95, "overall": 88},
       "tier": "A",
       "tags": ["skills", "multi-agent", "roles", "workflow", "docs-only"],
       "x_post_id": "2075933298627383473",
