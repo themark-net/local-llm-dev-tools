@@ -1,6 +1,6 @@
 # Evaluation Framework for Local LLM Dev Tools Catalog
 
-**Status:** v1.2 — 2026-07-16  
+**Status:** v1.3 — 2026-07-20  
 **Purpose:** Consistent triage → score → optional implementation into the **Grok + agent-cage** operator stack.
 
 **Operator defaults:** Grok Build CLI ([ADR-0002](adr/0002-grok-cli-primary-interface.md)), agent-cage lab, LiteLLM/Ollama as needed.  
@@ -10,6 +10,7 @@
 
 ### Phase 0: Triage & relevance gate
 - Local/self-hosted value, open source/reproducible, pipeline fit.
+- If the item is a full multi-agent **AI company** (org chart + personas + shared consensus + cycle autonomy), route to the **company rubric** instead of (or in addition to) the generic 1–5 table.
 - Accept → Phase 1, Defer, or Reject.
 
 ### Phase 1: Initial cataloging
@@ -18,11 +19,13 @@
 - Capture attributes (relevance, tags, github).
 
 ### Phase 2: Attribute scoring
-- Apply rubric (below).
+- **Standard tools:** Apply rubric table below.
+- **Autonomous AI Companies:** Apply [autonomous-ai-companies-rubric.md](evaluation/autonomous-ai-companies-rubric.md) (6 dimensions + Stage 0 gate).
 - Update cluster notes in `docs/scoring-summary.md` when useful.
 
 ### Phase 3: Integration feasibility
 - Map to: Grok skill, cage smoke, eval task, LiteLLM recipe, docs-only, or OQ.
+- For companies: default is **pattern extraction** (personas, consensus baton, pre-mortem, cycle gates) — not full daemon adoption.
 - Effort + priority (S/A/B/C).
 
 ### Phase 4: Implementation (only when justified)
@@ -34,7 +37,7 @@ Concrete change to **this** environment, e.g.:
 
 Guidance checker (non-authoritative): `python3 bootstrap/setup-local-agent-env.py`
 
-## Rubric (1–5 dimensions)
+## Rubric (1–5 dimensions) — standard tools
 
 | Dimension | 5 | 3 | 1–2 |
 |-----------|---|---|-----|
@@ -44,6 +47,23 @@ Guidance checker (non-authoritative): `python3 bootstrap/setup-local-agent-env.p
 | Unique value | Clear gap vs catalog | Overlaps existing | Redundant |
 
 **Overall priority:** S (act) · A (plan) · B (reference) · C (awareness)
+
+## Autonomous AI Companies — separate rubric
+
+Full multi-agent simulated companies (org + personas + consensus + cycles) use:
+
+**[evaluation/autonomous-ai-companies-rubric.md](evaluation/autonomous-ai-companies-rubric.md)**
+
+| Dimension | Weight |
+|-----------|--------|
+| Org Design & Role Fidelity | 20% |
+| Autonomy & Cycle Design | 20% |
+| Shared Memory & Consensus | 15% |
+| Safety & Blast Radius | 15% |
+| Economic Realism & Convergence | 15% |
+| Local / Operator Fit | 15% |
+
+Do not collapse these into Stage 1–4 tool scores alone.
 
 ## Alignment notes
 
@@ -55,4 +75,5 @@ Guidance checker (non-authoritative): `python3 bootstrap/setup-local-agent-env.p
 
 - [scoring-summary.md](scoring-summary.md)  
 - [CATEGORIZATION.md](../CATEGORIZATION.md)  
+- [evaluation/autonomous-ai-companies-rubric.md](evaluation/autonomous-ai-companies-rubric.md)  
 - [TODO.md](TODO.md) · T-0042 catalog re-score  
